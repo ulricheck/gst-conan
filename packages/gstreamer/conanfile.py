@@ -41,14 +41,15 @@ class GstreamerConan(ConanFile):
         self.copy("*.pc", dst="pc", keep_path=False, excludes="*-uninstalled.pc")
 
     def package_info(self):
-        bins = [ "libgstbase-1.0.so", \
-                 "libgstcheck-1.0.so", \
-                 "libgstcontroller-1.0.so", \
-                 "libgstcoreelements.so", \
-                 "libgstcoretracers.so", \
-                 "libgstnet-1.0.so", \
-                 "libgstreamer-1.0.so" ]
         self.cpp_info.includedirs = ["include"]
-        self.cpp_info.libs = ["libcheck", "libgstprintf"]
+        self.cpp_info.libs = [ "libcheck", \
+                               "libgstprintf", \
+                               "libgstbase-1.0.so", \
+                               "libgstcheck-1.0.so", \
+                               "libgstcontroller-1.0.so", \
+                               "libgstcoreelements.so", \
+                               "libgstcoretracers.so", \
+                               "libgstnet-1.0.so", \
+                               "libgstreamer-1.0.so" ]
         self.cpp_info.libdirs = ["lib"]
         self.cpp_info.bindirs = ["bin"]

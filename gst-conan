@@ -19,12 +19,12 @@ if '__main__' == __name__:
     # verb = create
     # ----------------------
     createParser = verbParsers.add_parser("create", description=\
+        "Clones github.com/Gstreamer/gst-build and builds everything."
         "Runs `conan create` on all projects (in the correct order).  "
         "Extra arguments can be appended to the end of the command line, and they "
         "will be attached to the end of all `conan create` commands.")
     createParser.add_argument("--rev", dest="rev", required=False, default="master",
-                              help="The gstreamer revision to check out.  This can be a branch or tag name which is common "
-                                   "to all Gstreamer git repos.")
+                              help="The revision of the gst-build.  This can be a sha, branch, or tag name.")
     createParser.add_argument("--version", dest="version", required=True,
                               help="The version of the conan artifacts.")
     createParser.add_argument("--user", dest="user", required=True,

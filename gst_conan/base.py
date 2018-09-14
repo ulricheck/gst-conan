@@ -2,6 +2,7 @@
 A 'base' layer of utility methods.
 '''
 
+import ctypes
 import os
 import platform
 import shlex
@@ -10,10 +11,13 @@ import sys
 
 def currentUserIsPrivileged():
     '''
-    Determines whether the user has administrative privileges.
+    Determines whether the user has root (on linux) or administrative (on windows) privileges.
     :return: [bool]  On Linux, returns true if the effective user ID is 0 (meaning `root`), false otherwise.
     '''
-    return os.geteuid() == 0
+    if isWindows():
+        return 1 == ctypes.windll.shell32.IsUserAnAdmin()
+    else:
+        return 0 == os.geteuid()
 
 def evaluate(cmd:str, throwable:bool=True, verbose:bool=True, workingFolder:str=None, fake:bool=False, env:dict=None) -> str:
     '''

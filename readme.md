@@ -55,7 +55,7 @@ pip3 install conan
 Pull requests are welcome.
 
 ## Legal disclaimer
-The contents of this repo are licensed under [LGPL](license.md).
+The contents of this repo are licensed under [LGPL](license).
 
 We (the maintainers of this repository) are not responsible for accurately representing the licensing status of third
 party components (Gstreamer or otherwise).  If **you** use these scripts to build anything, then **you** are responsible
