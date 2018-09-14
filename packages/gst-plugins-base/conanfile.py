@@ -2,12 +2,12 @@ from conans import ConanFile, Meson, tools
 
 import os
 
-class GstreamerConan(ConanFile):
-    name = "gstreamer"
+class GstPluginsBaseConan(ConanFile):
+    name = "gst-plugins-base"
     version = f"{os.environ['GST_CONAN_VERSION']}"
     license = "LGPL"
-    url = f"https://github.com/gstreamer/gstreamer"
-    description = "GStreamer open-source multimedia framework core library"
+    url = f"https://github.com/gstreamer/gst-plugins-base"
+    description = "A base layer of code for GStreamer plugins (including helper libraries)."
     settings = "os", "compiler", "build_type", "arch"
     options = \
     {   "shared": [True, False]
@@ -41,14 +41,10 @@ class GstreamerConan(ConanFile):
         self.copy("*.pc", dst="pc", keep_path=False, excludes="*-uninstalled.pc")
 
     def package_info(self):
-        bins = [ "libgstbase-1.0.so", \
-                 "libgstcheck-1.0.so", \
-                 "libgstcontroller-1.0.so", \
-                 "libgstcoreelements.so", \
-                 "libgstcoretracers.so", \
-                 "libgstnet-1.0.so", \
-                 "libgstreamer-1.0.so" ]
         self.cpp_info.includedirs = ["include"]
-        self.cpp_info.libs = ["libcheck", "libgstprintf"]
+        self.cpp_info.libs = []
         self.cpp_info.libdirs = ["lib"]
         self.cpp_info.bindirs = ["bin"]
+
+    def requirements(self):
+        self.requires(f"gstreamer/{self.version}@{os.environ['GST_CONAN_USER']}/{os.environ['GST_CONAN_CHANNEL']}")

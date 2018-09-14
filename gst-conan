@@ -1,0 +1,46 @@
+#!/usr/bin/python3
+
+import sys
+if sys.version_info[0] < 3:
+    raise Exception("The version of Python must be 3 or greater.")
+
+import argparse
+import gst_conan
+import os
+
+if '__main__' == __name__:
+    scriptName = os.path.basename(__file__)
+
+    mainParser = argparse.ArgumentParser(description=scriptName + ":  Conan support for gstreamer.",
+                                         formatter_class=argparse.RawTextHelpFormatter)
+    verbParsers = mainParser.add_subparsers(title="verbs", dest="verb")
+
+    #----------------------
+    # verb = create
+    # ----------------------
+    createParser = verbParsers.add_parser("create", description=\
+        "Runs `conan create` on all projects (in the correct order).  "
+        "Extra arguments can be appended to the end of the command line, and they "
+        "will be attached to the end of all `conan create` commands.")
+    createParser.add_argument("--rev", dest="rev", required=False, default="master",
+                              help="The gstreamer revision to check out.  This can be a branch or tag name which is common "
+                                   "to all Gstreamer git repos.")
+    createParser.add_argument("--version", dest="version", required=True,
+                              help="The version of the conan artifacts.")
+    createParser.add_argument("--user", dest="user", required=True,
+                              help="The conan user, part of the `$user/$channel` expression.")
+    createParser.add_argument("--channel", dest="channel", required=True,
+                              help="The conan user's channel, part of the `$user/$channel` expression.")
+
+    # ----------------------
+    # wire command to it's implementation
+    # ----------------------
+    thisFolder = os.path.dirname(__file__)
+    packagesFolder = os.path.join(thisFolder, "packages")
+
+    args, extraArgs = mainParser.parse_known_args()
+
+    if args.verb == "create":
+        gst_conan.commands.create(packagesFolder, args.rev, args.version, args.user, args.channel, extraArgs)
+    else:
+        raise Exception("Unrecognized verb:  " + args.verb)
