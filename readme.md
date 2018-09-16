@@ -22,14 +22,6 @@ For example, create several conan packages for Gstreamer `1.14.2` like this.
 ./gst-conan create --rev 1.14.2 --version 1.14.2 --user my_user_name --channel my_channel
 ```
 
-## Why does this tool exist?
-It would be great if you could just map one Meson project into one Conan package, but there is a parent Meson project 
-(under [gst-build](https://github.com/GStreamer/gst-build)) which is required to tie all the Meson projects together.
-Some of the projects will not build without the parent project.
-
-So ... this tool builds everything in one shot using [gst-build](https://github.com/GStreamer/gst-build) and then it
-creates the Conan packages.
-
 ## Contributions are welcome
 Your pull requests are welcome.
 
