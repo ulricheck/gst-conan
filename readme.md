@@ -1,14 +1,11 @@
 # gst-conan
-A tool for building [Gstreamer](https://gstreamer.freedesktop.org/) components as [Conan](https://conan.io/) packages
-using the [Meson](https://mesonbuild.com/) build system.
+This is a tool for building [Gstreamer](https://gstreamer.freedesktop.org/) components as [Conan](https://conan.io/) packages
+using the [Meson](https://mesonbuild.com/) build system via [gst-build](https://github.com/GStreamer/gst-build).
 
 This tool is expected to work on the same platforms as [gst-build](https://github.com/GStreamer/gst-build), so most Linux
 distros are covered (we guess).
 
 First time users should look at the [machine setup instructions](#machine-setup-instructions).
-
-## Current status
-**This project is not working yet.**  We are actively fixing bugs (stay tuned).
 
 ## Usage
 Read all about it.
@@ -19,11 +16,22 @@ cd gst-conan
 ./gst-conan --help
 ```
 
-For example, create a conan package for Gstreamer `1.14.2` like this.
+For example, create several conan packages for Gstreamer `1.14.2` like this.
 
 ```bash
 ./gst-conan create --rev 1.14.2 --version 1.14.2 --user my_user_name --channel my_channel
 ```
+
+## Why does this tool exist?
+It would be great if you could just map one Meson project into one Conan package, but there is a parent Meson project 
+(under [gst-build](https://github.com/GStreamer/gst-build)) which is required to tie all the Meson projects together.
+Some of the projects will not build without the parent project.
+
+So ... this tool builds everything in one shot using [gst-build](https://github.com/GStreamer/gst-build) and then it
+creates the Conan packages.
+
+## Contributions are welcome
+Your pull requests are welcome.
 
 ## Machine setup instructions
 
@@ -45,14 +53,11 @@ Restart your terminal or execute `source ~/.bashrc`.
 #### 2. Install stuff
 ```bash
 sudo apt update
-sudo apt install --yes git python-pip python3-pip ninja-build build-essential libmount-dev libselinux-dev gobject-introspection libglib2.0-dev libgirepository1.0-dev libxml2-dev
+sudo apt install --yes git python-pip python3-pip ninja-build build-essential libmount-dev libselinux-dev gobject-introspection libglib2.0-dev libgirepository1.0-dev libxml2-dev libavfilter-dev
 pip3 install setuptools wheel
 pip3 install --user meson
 pip3 install conan
 ```
-
-## Contributions
-Pull requests are welcome.
 
 ## Legal disclaimer
 The contents of this repo are licensed under [LGPL](license).

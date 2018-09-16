@@ -1,6 +1,5 @@
 from conans import ConanFile
 
-import glob
 import os
 import sys
 
@@ -8,12 +7,12 @@ gstConanFolder = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 sys.path.insert(0, gstConanFolder)
 import gst_conan
 
-class GstreamerConan(ConanFile):
-    name = "gstreamer"
+class GstRtspServerConan(ConanFile):
+    name = "gst-rtsp-server"
     version = f"{os.environ['GST_CONAN_VERSION']}"
-    license = "LGPL"
-    url = "https://github.com/gstreamer/gstreamer"
-    description = "GStreamer open-source multimedia framework core library"
+    license = "?"
+    url = "https://github.com/gstreamer/gst-rtsp-server"
+    description = "A Gstreamer library for building an RTSP server."
     settings = "os", "compiler", "build_type", "arch"
     options = \
     {   "shared": [True, False], \
@@ -56,6 +55,9 @@ class GstreamerConan(ConanFile):
 
         self.cpp_info.libdirs = ["lib"]
         self.cpp_info.bindirs = ["bin"]
+
+    def requirements(self):
+        self.requires(f"gstreamer/{self.version}@{os.environ['GST_CONAN_USER']}/{os.environ['GST_CONAN_CHANNEL']}")
 
     def source(self):
         # We are building packages without the sources.

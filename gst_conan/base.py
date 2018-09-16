@@ -9,7 +9,20 @@ import shlex
 import subprocess
 import sys
 
-def currentUserIsPrivileged():
+def basenames(filenames:list) -> list:
+    '''
+    Executes `os.path.basename` on each element of the input to provide each element of the output.
+    :param filenames: The input filenames.
+    :return: The return value of `os.path.basename` for each of the input filenames.
+    '''
+
+    output = []
+    for filename in filenames:
+        output.append(os.path.basename(filename))
+
+    return output
+
+def currentUserIsPrivileged() -> bool:
     '''
     Determines whether the user has root (on linux) or administrative (on windows) privileges.
     :return: [bool]  On Linux, returns true if the effective user ID is 0 (meaning `root`), false otherwise.
@@ -164,23 +177,39 @@ def getEnv(name:str) -> str:
 
     return output
 
-def isDarwin():
+def gstConanFolder() -> str:
+    '''
+    Gets the folder inside which the `gst-conan` script is located (i.e. the root folder of this repo).
+    :return: The absolute folder path.
+    '''
+    output = os.path.dirname(os.path.dirname(__file__))
+    return output
+
+def isDarwin() -> bool:
     '''
     Determines whether the platform is Darwin (mac).
     :return: [bool] True if the platform is Darwin, false otherwise.
     '''
     return sys.platform.startswith("darwin")
 
-def isLinux():
+def isLinux() -> bool:
     '''
     Determines whether the platform is Linux.
     :return: [bool] True if the platform is Linux, false otherwise.
     '''
     return sys.platform.startswith("linux")
 
-def isWindows():
+def isWindows() -> bool:
     '''
     Determines whether the platform is Windows.
     :return: [bool] True if the platform is Windows, false otherwise.
     '''
     return sys.platform.startswith("win")
+
+def messFolder() -> str:
+    '''
+    Gets the mess folder (i.e. the folder where intermediate files are stored, which are ignored from the git repo).
+    :return: The absolute folder path.
+    '''
+    output = os.path.join(gstConanFolder(), "mess")
+    return output
