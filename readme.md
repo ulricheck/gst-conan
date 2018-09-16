@@ -25,6 +25,21 @@ For example, create several conan packages for Gstreamer `1.14.2` like this.
 ## Contributions are welcome
 Your pull requests are welcome.
 
+## Roadmap
+This is a new project.  We are hoping to make some improvements.
+
+### Create samples which consume the Conan packages
+Currently, we don't know whether our packages can be used properly.  We don't have any sample code which pulls in
+the Conan packages being built here.
+
+### Follow best practices for Conan
+We would like to follow the best practices for Conan.
+
+Currently, we are only using Conan for the packaging step.  We are building the source outside of Conan because many of
+the Meson projects will not build unless they are under the parent-project of [gst-build](https://github.com/GStreamer/gst-build).
+We would like to figure out how to get around this limitation (of being forced to build the parent project) so that we
+can use Conan to drive each individual Meson build.
+
 ## Machine setup instructions
 
 Below are instructions which cover the distros that we have tried.
