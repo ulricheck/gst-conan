@@ -4,8 +4,8 @@ A 'base' layer of utility methods.
 
 import ctypes
 import os
-import platform
 import shlex
+import shutil
 import subprocess
 import sys
 
@@ -21,6 +21,34 @@ def basenames(filenames:list) -> list:
         output.append(os.path.basename(filename))
 
     return output
+
+def copytree(srcFolder:str, destFolder:str, includeSubfolders:bool=True, onlyNewerSources:bool=True):
+    '''
+    Copy elements under `srcFolder` to under `destFolder`.
+    :param srcFolder: The source folder.
+    :param destFolder:  The destination folder.
+    :param includeSubfolders:  If true, subfolders are also copied (with full contents).
+    :param onlyNewerSources:  If true, a file is only copied if it does not exist at the destination location, or if the
+    file at the destination location is older than the file to be copied.
+    :return: None
+    '''
+
+    if not os.path.isdir(srcFolder):
+        raise Exception("The source folder is not valid.")
+
+    os.makedirs(destFolder, exist_ok=True)
+
+    for item in os.listdir(srcFolder):
+        src = os.path.join(srcFolder, item)
+        dest = os.path.join(destFolder, item)
+        if os.path.isdir(src) and includeSubfolders:
+            copytree(src, dest)
+        else:
+            doCopy = True
+            if onlyNewerSources and os.path.isfile(dest):
+                doCopy = os.path.getmtime(src) > os.path.getmtime(dest)
+            if doCopy:
+                shutil.copy2(src, dest)
 
 def currentUserIsPrivileged() -> bool:
     '''

@@ -2,7 +2,12 @@ from . import base
 from . import build
 
 import os
+import shutil
 import subprocess
+
+def clean() -> None:
+    buildFolder = os.path.join(base.messFolder(), "gst-build-output")
+    shutil.rmtree(buildFolder)
 
 def create(packagesFolder:str, revision:str, version:str, buildtype:str, user:str, channel:str, extraArgs:list) -> None:
     '''
@@ -43,11 +48,12 @@ def create(packagesFolder:str, revision:str, version:str, buildtype:str, user:st
     env = os.environ.copy()
     env['GST_BUILD_REPO_FOLDER'] = gstBuildFolder
     env['GST_BUILD_OUTPUT_FOLDER'] = buildFolder
+    env['GST_CONAN_FOLDER'] = base.gstConanFolder()
     env['GST_CONAN_VERSION'] = version
     env['GST_CONAN_USER'] = user
     env['GST_CONAN_CHANNEL'] = channel
 
     for package in packageList:
         packageFolder = os.path.join(packagesFolder, package)
-        cmd = f"conan create {packageFolder} {user}/{channel} -s build_type=None -o meson_buildtype={buildtype} {xargs}"
+        cmd = f"conan create {packageFolder} {package}/{version}@{user}/{channel} -s build_type=None -o meson_buildtype={buildtype} {xargs}"
         base.execute(cmd, env=env)

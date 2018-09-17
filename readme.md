@@ -16,10 +16,18 @@ cd gst-conan
 ./gst-conan --help
 ```
 
-For example, create several conan packages for Gstreamer `1.14.2` like this.
+You can get help for each verb.  For example:
+```bash 
+./gst-conan create --help
+./gst-conan clean --help
+```
+
+### How to create the Conan packages
+Use `gst-conan` to create several conan packages for Gstreamer `1.14.2` as follows.  The packages are published in your
+local Conan repo.
 
 ```bash
-./gst-conan create --rev 1.14.2 --version 1.14.2 --user my_user_name --channel my_channel
+./gst-conan create --rev 1.14.2 --version 1.14.2 --buildtype debug --user my_user_name --channel my_channel
 ```
 
 ## Contributions are welcome
@@ -37,8 +45,8 @@ We would like to follow the best practices for Conan.
 
 Currently, we are only using Conan for the packaging step.  We are building the source outside of Conan because many of
 the Meson projects will not build unless they are under the parent-project of [gst-build](https://github.com/GStreamer/gst-build).
-We would like to figure out how to get around this limitation (of being forced to build the parent project) so that we
-can use Conan to drive each individual Meson build.
+We would like to figure out how to get around this restriction (of being forced to use the parent project) so that we
+can use Conan itself to link the inter-project dependencies and to drive each Meson build individually.
 
 ## Machine setup instructions
 

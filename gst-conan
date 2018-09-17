@@ -15,6 +15,13 @@ if '__main__' == __name__:
                                          formatter_class=argparse.RawTextHelpFormatter)
     verbParsers = mainParser.add_subparsers(title="verbs", dest="verb")
 
+    # ----------------------
+    # verb = clean
+    # ----------------------
+    cleanParser = verbParsers.add_parser("clean", description= \
+        "Cleans the Meson build output folder, thus forcing a fresh build during the next command to create "
+        "Conan packages. Without this step, Meson tends to rely on the prior build.")
+
     #----------------------
     # verb = create
     # ----------------------
@@ -43,7 +50,9 @@ if '__main__' == __name__:
 
     args, extraArgs = mainParser.parse_known_args()
 
-    if args.verb == "create":
+    if args.verb == "clean":
+        gst_conan.commands.clean()
+    elif args.verb == "create":
         gst_conan.commands.create(packagesFolder, args.rev, args.version, args.buildtype, args.user, args.channel, extraArgs)
     else:
         raise Exception("Unrecognized verb:  " + args.verb)

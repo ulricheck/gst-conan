@@ -3,13 +3,20 @@ from conans import ConanFile
 import os
 import sys
 
-gstConanFolder = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-sys.path.insert(0, gstConanFolder)
+# ----------------
+# Import the gst_conan package
+# ----------------
+# When loaded via gst-conan, the GST_CONAN_FOLDER variable gives the location of the `gst_conan` package.
+# Otherwise, when loaded from within the `exports` folder, the `gst_conan` package is next to conanfile.py
+gstConanParentFolder = os.getenv("GST_CONAN_FOLDER", os.path.dirname(__file__))
+sys.path.insert(0, os.path.dirname(gstConanParentFolder))
 import gst_conan
 
+# ----------------
+# Implement the ConanFile
+# ----------------
 class GstPluginsUglyConan(ConanFile):
     name = "gst-plugins-ugly"
-    version = f"{os.environ['GST_CONAN_VERSION']}"
     license = "Varied and restrictive"
     url = "https://github.com/gstreamer/gst-plugins-ugly"
     description = "Ugly Gstreamer plugins and helper libraries."
@@ -23,14 +30,32 @@ class GstPluginsUglyConan(ConanFile):
 
     def __init__(self, output, runner, user, channel):
         ConanFile.__init__(self, output, runner, user, channel)
-        self.repoFolder = os.path.join(os.environ['GST_BUILD_REPO_FOLDER'], "subprojects", self.name)
-        self.outputFolder = os.path.join(os.environ['GST_BUILD_OUTPUT_FOLDER'], "subprojects", self.name)
+
         self.binFiles = []
         self.libFiles = []
         self.pcFiles = []
 
+        # These environment variables only exist when the package is created with gst-conan
+        self.repoFolder = os.getenv('GST_BUILD_REPO_FOLDER', None)
+        self.outputFolder = os.getenv('GST_BUILD_OUTPUT_FOLDER', None)
+
+        if self.repoFolder:
+            self.repoFolder = os.path.join(self.repoFolder, "subprojects", self.name)
+
+        if self.outputFolder:
+            self.outputFolder = os.path.join(self.outputFolder, "subprojects", self.name)
+
     def build(self):
-        # We already built it
+        # FIXME:  We are building the project separately, in violation of best practices for Conan.
+
+        # This is how we would follow best practices for Conan.  Unfortunately this does not work because the current
+        # Meson project takes dependencies from the parent project (gst-build).
+        #
+        # from conans import Meson
+        # meson = Meson(self)
+        # meson.configure(source_folder=self.name, build_folder="build")
+        # meson.build()
+
         pass
 
     def package(self):
@@ -49,6 +74,12 @@ class GstPluginsUglyConan(ConanFile):
         # pc
         self.pcFiles = self.copy("*.pc", dst="pc", src=self.outputFolder, keep_path=False, excludes="*-uninstalled.pc")
 
+        # copy gst_conan to `export` folder
+        exportFolder = os.path.join(os.path.dirname(os.path.dirname(self.build_folder)), "export")
+        srcFolder = os.path.join(gstConanParentFolder, "gst_conan")
+        destFolder = os.path.join(exportFolder, "gst_conan")
+        gst_conan.base.copytree(srcFolder=srcFolder, destFolder=destFolder)
+
     def package_info(self):
         self.cpp_info.includedirs = ["include"]
         self.cpp_info.libs = gst_conan.base.basenames(self.libFiles)
@@ -61,9 +92,12 @@ class GstPluginsUglyConan(ConanFile):
         self.requires(f"gst-plugins-base/{self.version}@{os.environ['GST_CONAN_USER']}/{os.environ['GST_CONAN_CHANNEL']}")
 
     def source(self):
-        # We are building packages without the sources.
-        with open("readme.txt", "w") as txt:
-            txt.write("No sources are provided because multiple packages must be built together.\n\n" \
-                      "To build this package, go to the following repository.\n\n"
-                      "https://github.com/Panopto/gst-conan")
-            txt.close()
+        # WARNING:  Conan will be unable to build from sources with the current recipe.  But we provide the sources anyway.
+
+        # We could pull down the sources like this.
+        # self.run(f"git clone --recurse-submodules https://github.com/gstreamer/{self.name}.git -b {os.environ['GST_CONAN_REVISION']}")
+        # self.run(f"cd {self.name}")
+
+        # However we have already used gst-build to pull down the sources, so this is faster.
+        if self.repoFolder != None:
+            gst_conan.base.copytree(srcFolder=self.repoFolder, destFolder=self.source_folder)
