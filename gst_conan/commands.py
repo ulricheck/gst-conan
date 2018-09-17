@@ -7,7 +7,10 @@ import subprocess
 
 def clean() -> None:
     buildFolder = os.path.join(base.messFolder(), "gst-build-output")
-    shutil.rmtree(buildFolder)
+    if os.path.isfile(buildFolder):
+        os.remove(buildFolder)
+    elif os.path.isdir(buildFolder):
+        shutil.rmtree(buildFolder)
 
 def create(packagesFolder:str, revision:str, version:str, buildtype:str, user:str, channel:str, extraArgs:list) -> None:
     '''

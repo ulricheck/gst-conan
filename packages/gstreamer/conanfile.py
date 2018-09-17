@@ -9,7 +9,7 @@ import sys
 # When loaded via gst-conan, the `GST_CONAN_FOLDER` variable gives the location of the `gst_conan` package.
 # Otherwise, the `gst_conan` package is next to `conanfile.py`
 gstConanParentFolder = os.getenv("GST_CONAN_FOLDER", os.path.dirname(__file__))
-sys.path.insert(0, os.path.dirname(gstConanParentFolder))
+sys.path.insert(0, gstConanParentFolder)
 import gst_conan
 
 # ----------------
