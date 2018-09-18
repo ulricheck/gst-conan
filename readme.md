@@ -1,11 +1,15 @@
 # gst-conan
 This is a tool for building [Gstreamer](https://gstreamer.freedesktop.org/) components as [Conan](https://conan.io/) packages
-using the [Meson](https://mesonbuild.com/) build system via [gst-build](https://github.com/GStreamer/gst-build).
+using the [Meson](https://mesonbuild.com/) build scripts included in the Gstreamer repositories.
 
-This tool is expected to work on the same platforms as [gst-build](https://github.com/GStreamer/gst-build), so most Linux
-distros are covered (we guess).
+This tool is expected to work on most Linux distros (we guess).  In the future it may work on Mac and Windows (pending)
+work by other contributors in other Gstreamer repositories.
 
 First time users should look at the [machine setup instructions](#machine-setup-instructions).
+
+## Status
+This is a very new project and there are many known problems.  We will be making some drastic changes.
+Stay tuned.
 
 ## How to use `gst-conan`
 Clone it and read the `--help` info. 
@@ -19,7 +23,6 @@ cd gst-conan
 You can get help for each verb.  For example:
 ```bash 
 ./gst-conan create --help
-./gst-conan clean --help
 ```
 
 ### How to create the Conan packages
