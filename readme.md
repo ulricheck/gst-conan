@@ -8,8 +8,14 @@ work by other contributors in other Gstreamer repositories.
 First time users should look at the [machine setup instructions](#machine-setup-instructions).
 
 ## Status
-This is a very new project and there are many known problems.  We will be making some drastic changes.
-Stay tuned.
+This is a very new project and there is much work to be done.
+
+Currently I have 3 conan packages and an example which consumes them:
+ * gstreamer
+ * gst-plugins-base
+ * gst-editing-services 
+
+Currently, none of the plugins are being packaged; but I'll be working on it.
 
 ## How to use `gst-conan`
 Clone it and read the `--help` info. 

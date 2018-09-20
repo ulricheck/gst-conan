@@ -1,16 +1,8 @@
 from . import base
-from . import build
 
 import os
 import shutil
 import subprocess
-
-def clean() -> None:
-    buildFolder = os.path.join(base.messFolder(), "gst-build-output")
-    if os.path.isfile(buildFolder):
-        os.remove(buildFolder)
-    elif os.path.isdir(buildFolder):
-        shutil.rmtree(buildFolder)
 
 def create(packagesFolder:str, revision:str, version:str, buildtype:str, user:str, channel:str, extraArgs:list) -> None:
     '''
@@ -26,22 +18,19 @@ def create(packagesFolder:str, revision:str, version:str, buildtype:str, user:st
     '''
 
     # The list of packages in order of when they should be created.
-    packageList = \
-    [   "gstreamer",\
-        "gst-plugins-base",\
-        "gst-plugins-good", \
-        "gst-plugins-bad",\
-        "gst-plugins-ugly",\
-        "gst-editing-services", \
-        "gst-rtsp-server", \
-        "gst-libav" \
-    ]
-
-    # Checkout the relevant revision of gst-build, then build it
-    gstBuildFolder = os.path.join(base.messFolder(), "gst-build")
-    buildFolder    = os.path.join(base.messFolder(), "gst-build-output")
-    build.checkout(gstBuildFolder, revision)
-    build.build(gstBuildFolder, buildFolder)
+    #packageList = \
+    #[   "gstreamer",\
+    #    "gst-plugins-base",\
+    #    "gst-plugins-good", \
+    #    "gst-plugins-bad",\
+    #    "gst-plugins-ugly",\
+    #    "gst-editing-services", \
+    #    "gst-rtsp-server", \
+    #    "gst-libav" \
+    #]
+    packageList = ["gstreamer",
+                   "gst-plugins-base",
+                   "gst-editing-services"]
 
     # Extra args to be appended to the end of the `conan create ` command
     xargs = ""
@@ -49,14 +38,13 @@ def create(packagesFolder:str, revision:str, version:str, buildtype:str, user:st
         xargs = subprocess.list2cmdline(extraArgs)
 
     env = os.environ.copy()
-    env['GST_BUILD_REPO_FOLDER'] = gstBuildFolder
-    env['GST_BUILD_OUTPUT_FOLDER'] = buildFolder
     env['GST_CONAN_FOLDER'] = base.gstConanFolder()
+    env['GST_CONAN_REVISION'] = revision
     env['GST_CONAN_VERSION'] = version
     env['GST_CONAN_USER'] = user
     env['GST_CONAN_CHANNEL'] = channel
 
     for package in packageList:
         packageFolder = os.path.join(packagesFolder, package)
-        cmd = f"conan create {packageFolder} {package}/{version}@{user}/{channel} -s build_type=None -o meson_buildtype={buildtype} {xargs}"
+        cmd = f"conan create {packageFolder} {package}/{version}@{user}/{channel} -s build_type={buildtype} {xargs}"
         base.execute(cmd, env=env)
