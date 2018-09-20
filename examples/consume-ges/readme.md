@@ -4,7 +4,8 @@ necessary to create the conan packages first.  You can do this from the shell as
 
 ```bash
 # From the root folder of this repo:
-./gst-conan create --rev 1.14.3 --version 1.14.3 --buildtype Debug --user my_conan_user --channel my_conan_channel
+./gst-conan create --rev 1.14.3 --version 1.14.3 --build_type Debug --user my_conan_user --channel my_conan_channel
+
 ```
 
 The values in the command above must match the values at the top of the `conanfile.py` in this folder.

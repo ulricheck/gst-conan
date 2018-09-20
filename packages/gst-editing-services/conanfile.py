@@ -1,6 +1,7 @@
 from conans import ConanFile, Meson
 
 import os
+import shutil
 import sys
 
 # ----------------
@@ -79,8 +80,8 @@ class GstEditingServicesConan(ConanFile):
             self.output.info("--------------------------")
 
         pcPaths = [
-            os.path.join(self.deps_cpp_info["gstreamer"].rootpath, "pc"),
-            os.path.join(self.deps_cpp_info["gst-plugins-base"].rootpath, "pc")
+            os.path.join(self.deps_cpp_info["gstreamer"].rootpath, "pc-conan"),
+            os.path.join(self.deps_cpp_info["gst-plugins-base"].rootpath, "pc-conan")
         ]
 
         meson = Meson(self)
@@ -145,6 +146,7 @@ class GstEditingServicesConan(ConanFile):
         # pkg-config files and associated files (libs, girs, and typelibs)
         srcPcFolder = os.path.join(buildFolder, "pkgconfig")
         destPcFolder = os.path.join(self.package_folder, "pc")
+        destPcConanFolder = os.path.join(self.package_folder, "pc-conan")
         destGirFolder = os.path.join(self.package_folder, "data", "gir-1.0")
         destTypelibFolder = os.path.join(self.package_folder, "lib", "girepository-1.0")
         for pcName, otherNames in self.pcMap.items():
@@ -160,6 +162,9 @@ class GstEditingServicesConan(ConanFile):
             if None != girName:
                 gst_conan.base.copyOneFile(f"{girName}.gir", buildFolder, destGirFolder, keepPath=False)
                 gst_conan.base.copyOneFile(f"{girName}.typelib", buildFolder, destTypelibFolder, keepPath=False)
+
+            # Copy the original pkg-config file
+            shutil.copy2(src=os.path.join(srcPcFolder, f"{pcName}.pc"), dst=destPcFolder)
 
             # Load the pkg-config file, modify, and save
             pcFile = gst_conan.build.PkgConfigFile()
@@ -178,7 +183,7 @@ class GstEditingServicesConan(ConanFile):
                 pcFile.variables["toolsdir"] = "${prefix}/bin"
                 pcFile.variables["pluginsdir"] = "${prefix}/plugins"
 
-            pcFile.save(os.path.join(destPcFolder, f"{pcName}.pc"))
+            pcFile.save(os.path.join(destPcConanFolder, f"{pcName}.pc"))
 
     def package_info(self):
         '''

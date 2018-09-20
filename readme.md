@@ -39,11 +39,11 @@ You can get help for each verb.  For example:
 ```
 
 ### How to create the Conan packages
-Use `gst-conan` to create several conan packages for Gstreamer `1.14.2` as follows.  The packages are published in your
+Use `gst-conan` to create several conan packages for Gstreamer `1.14.3` as follows.  The packages are published in your
 local Conan repo.
 
 ```bash
-./gst-conan create --rev 1.14.2 --version 1.14.2 --buildtype debug --user my_user_name --channel my_channel
+./gst-conan create --rev 1.14.3 --version 1.14.3 --build_type Debug --user my_conan_user --channel my_conan_channel
 ```
 
 ## Contributions are welcome

@@ -30,7 +30,7 @@ class ExampleConsumeGes(ConanFile):
         # We need to wire the pkg_config_path for GES and it's transitive dependencies.
         pcPaths = []
         for depName, dep in self.deps_cpp_info.dependencies:
-            pcPath = os.path.join(dep.rootpath, "pc")
+            pcPath = os.path.join(dep.rootpath, "pc-conan")
             if os.path.isdir(pcPath):
                 pcPaths.append(pcPath)
 
