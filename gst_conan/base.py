@@ -418,7 +418,7 @@ def groupSoFiles(sortedList:list) -> list:
 
     Each *.so file can have multiple companions with a version number appended after the `.so` suffix.  The companions
     can be files or links to files.  For example:
-        libwhatever.so
+        libwhatever.so    [symlink --> libwhatever.so.0]
         libwhatever.so.0  [symlink --> libwhatever.so.0.1234.0]
         libwhatever.so.0.1234.0
         libwhatever.so.1  [symlink --> libwhatever.so.1.4321.0]

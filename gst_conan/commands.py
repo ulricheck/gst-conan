@@ -30,7 +30,10 @@ def create(packagesFolder:str, revision:str, version:str, build_type:str, user:s
     #]
     packageList = ["gstreamer",
                    "gst-plugins-base",
-                   "gst-editing-services"]
+                   "gst-editing-services",
+                   "gst-plugins-good",
+                   "gst-plugins-bad",
+                   "gst-libav"]
 
     # Extra args to be appended to the end of the `conan create ` command
     xargs = ""

@@ -19,11 +19,11 @@ if gst_conan.DEBUG_MODE:
 # ----------------
 # Implement the ConanFile
 # ----------------
-class GstEditingServicesConan(ConanFile):
-    name = "gst-editing-services"
+class GstPluginsBadConan(ConanFile):
+    name = "gst-plugins-bad"
     license = "LGPL"
-    url = "https://github.com/gstreamer/gst-editing-services"
-    description = "A base layer of code for GStreamer plugins with helper libraries"
+    url = "https://github.com/gstreamer/gst-plugins-bad"
+    description = "Bad Gstreamer plugins and helper libraries."
     settings = "os", "compiler", "build_type", "arch"
     options = {}
     default_options = None
@@ -36,7 +36,6 @@ class GstEditingServicesConan(ConanFile):
 
         #  The names of executable files without any possible file extension
         self.execNames =[
-            "ges-launch-1.0"
         ]
 
         #  The key is the names of the pkgconfig files (without the *.pc extension)
@@ -44,19 +43,101 @@ class GstEditingServicesConan(ConanFile):
         #      value.lib = the name of the shared library file (without the *.so or *.dll extension)
         #      value.gir = the name of the *.gir and *.typelib files (without the extension)
         self.pcMap = {
-            "gst-editing-services-1.0" : {
-                "lib" : "libges-1.0",
-                "gir" : "GES-1.0"
-            }
         }
 
         # The names of the plugin files (without the *.so or *.dll extension)
         self.pluginNames = [
-            "libgstnle"
+            "libgstlegacyrawparse",
+            "libgstfestival",
+            "libgstvmnc",
+            "libgstadpcmdec",
+            "libgstinter",
+            "libgstsdpelem",
+            "libgstremovesilence",
+            "libgstmxf",
+            "libgstfrei0r",
+            "libgstgeometrictransform",
+            "libgstvideoframe_audiolevel",
+            "libgstvideofiltersbad",
+            "libgstspeed",
+            "libgstmpegpsmux",
+            "libgstivtc",
+            "libgstjp2kdecimator",
+            "libgstfaceoverlay",
+            "libgstautoconvert",
+            "libgstaudiofxbad",
+            "libgstaudiobuffersplit",
+            "libgstsmooth",
+            "libgstmpegtsdemux",
+            "libgstdvdspu",
+            "libgstpcapparse",
+            "libgstfieldanalysis",
+            "libgstvideosignal",
+            "libgstmpegpsdemux",
+            "libgstpnm",
+            "libgstcoloreffects",
+            "libgstmidi",
+            "libgstaiff",
+            "libgstfreeverb",
+            "libgstaudiomixmatrix",
+            "libgsttimecode",
+            "libgstsegmentclip",
+            "libgstivfparse",
+            "libgstnetsim",
+            "libgstdebugutilsbad",
+            "libgstaudiolatency",
+            "libgstgdp",
+            "libgstinterlace",
+            "libgstsubenc",
+            "libgstproxy",
+            "libgstaudiovisualizers",
+            "libgstrtponvif",
+            "libgstasfmux",
+            "libgstcompositor",
+            "libgstaccurip",
+            "libgstrfbsrc",
+            "libgstadpcmenc",
+            "libgstgaudieffects",
+            "libgstyadif",
+            "libgstid3tag",
+            "libgsty4mdec",
+            "libgstmpegtsmux",
+            "libgstsiren",
+            "libgstjpegformat",
+            "libgststereo",
+            "libgstvideoparsersbad",
+            "libgstdvbsuboverlay",
+            "libgstbayer",
+            "libgstcamerabin",
+            "libgstdtls",
+            "libgstdashdemux",
+            "libgstcurl",
+            "libgstsmoothstreaming",
+            "libgstopenglmixers",
+            "libgsthls",
+            "libgstkms",
+            "libgstdecklink",
+            "libgstshm",
+            "libgstfbdevsink",
+            "libgstdvb",
+            "libgstipcpipeline",
+            "libgstcodecparsers-1.0",
+            "libgstbadvideo-1.0",
+            "libgsturidownloader-1.0",
+            "libgstbadaudio-1.0",
+            "libgstadaptivedemux-1.0",
+            "libgstisoff-1.0",
+            "libgstbasecamerabinsrc-1.0",
+            "libgstwebrtc-1.0",
+            "libgstmpegts-1.0",
+            "libgstphotography-1.0",
+            "libgstinsertbin-1.0",
+            "libgstplayer-1.0"
         ]
 
         # The names of the static library files (without the *.a or *.lib extension)
         self.staticLibNames = [
+            "libparser"
         ]
 
         # Environment variables that only exist when `conan` is called through gst-conan
@@ -64,14 +145,14 @@ class GstEditingServicesConan(ConanFile):
 
         if gst_conan.DEBUG_MODE:
             self.output.info("--------------------------")
-            self.output.info("GstEditingServicesConan.__init__")
+            self.output.info("GstPluginsBadConan.__init__")
             self.output.info(json.dumps(self.__dict__, indent=4, sort_keys=True, skipkeys=True, default=lambda x: None))
             self.output.info("--------------------------")
 
     def build(self):
         if gst_conan.DEBUG_MODE:
             self.output.info("--------------------------")
-            self.output.info("GstEditingServicesConan.build")
+            self.output.info("GstPluginsBadConan.build")
             self.output.info(f"os = {self.settings.os}")
             self.output.info(f"compiler = {self.settings.compiler}")
             self.output.info(f"build_type = {self.settings.build_type}")
@@ -91,7 +172,7 @@ class GstEditingServicesConan(ConanFile):
     def package(self):
         if gst_conan.DEBUG_MODE:
             self.output.info("--------------------------")
-            self.output.info("GstEditingServicesConan.package")
+            self.output.info("GstPluginsBadConan.package")
             self.output.info(json.dumps(self.__dict__, indent=4, sort_keys=True, skipkeys=True, default=lambda x: None) + "")
             self.output.info("--------------------------")
 
@@ -112,23 +193,7 @@ class GstEditingServicesConan(ConanFile):
         buildFolder = os.path.join(self.build_folder, "build")
 
         # include files
-        self.copy("*.h", dst="include/ges", src=f"{self.name}/ges")
-        self.copy("*.h", dst="include/ges", src= "build/ges")
-
-        # bin folder
-        os.makedirs(os.path.join(self.package_folder, "bin"), exist_ok=True)
-
-        # executables go into bin folder
-        for execName in self.execNames:
-            if gst_conan.DEBUG_MODE:
-                self.output.info(f"{execName}{extExe}")
-                self.output.info(os.path.join(buildFolder, "tools"))
-                self.output.info(os.path.join(self.package_folder, "bin"))
-
-            gst_conan.base.copyOneFile(f"{execName}{extExe}",
-                srcFolder=os.path.join(buildFolder, "tools"),
-                destFolder=os.path.join(self.package_folder, "bin"),
-                keepPath=False)
+        self.copy("*.h", dst="include", src=f"{self.name}")
 
         # static libs go into lib folder
         destLibFolder = os.path.join(self.package_folder, "lib")
@@ -143,56 +208,14 @@ class GstEditingServicesConan(ConanFile):
             else:
                 gst_conan.base.copyOneFile(f"{pluginName}{extSo}", buildFolder, destPluginFolder, keepPath=False)
 
-        # pkg-config files and associated files (libs, girs, and typelibs)
-        srcPcFolder = os.path.join(buildFolder, "pkgconfig")
-        destPcFolder = os.path.join(self.package_folder, "pc")
-        destPcConanFolder = os.path.join(self.package_folder, "pc-conan")
-        destGirFolder = os.path.join(self.package_folder, "data", "gir-1.0")
-        destTypelibFolder = os.path.join(self.package_folder, "lib", "girepository-1.0")
-        for pcName, otherNames in self.pcMap.items():
-            libName = otherNames["lib"]
-            girName = otherNames["gir"]
-
-            if None != libName:
-                if isLinux:
-                    gst_conan.base.copyOneSharedObjectFileGroup(libName, buildFolder, destLibFolder, keepPath=False)
-                else:
-                    gst_conan.base.copyOneFile(f"{libName}{extSo}", buildFolder, destLibFolder, keepPath=False)
-
-            if None != girName:
-                gst_conan.base.copyOneFile(f"{girName}.gir", buildFolder, destGirFolder, keepPath=False)
-                gst_conan.base.copyOneFile(f"{girName}.typelib", buildFolder, destTypelibFolder, keepPath=False)
-
-            # Copy the original pkg-config file
-            shutil.copy2(src=os.path.join(srcPcFolder, f"{pcName}.pc"), dst=destPcFolder)
-
-            # Load the pkg-config file, modify, and save
-            pcFile = gst_conan.build.PkgConfigFile()
-            pcFile.load(os.path.join(srcPcFolder, f"{pcName}.pc"))
-
-            pcFile.variables["prefix"] = self.package_folder
-            pcFile.variables["exec_prefix"] = "${prefix}"
-            pcFile.variables["libdir"] = "${prefix}/lib"
-            pcFile.variables["includedir"] = "${prefix}/include"
-            pcFile.variables["datarootdir"] = "${prefix}/data"
-            pcFile.variables["datadir"] = "${datarootdir}"
-            pcFile.variables["girdir"] = "${datadir}/gir-1.0"
-            pcFile.variables["typelibdir"] = "${libdir}/girepository-1.0"
-
-            if pcName == "gstreamer-1.0":
-                pcFile.variables["toolsdir"] = "${prefix}/bin"
-                pcFile.variables["pluginsdir"] = "${prefix}/plugins"
-
-            pcFile.save(os.path.join(destPcConanFolder, f"{pcName}.pc"))
-
     def package_info(self):
         '''
-        I am not sure if this method is necessary since GstEditingServices is using pkgconfig.
+        I am not sure if this method is necessary since GstPluginsGood is using pkgconfig.
         '''
 
         if gst_conan.DEBUG_MODE:
             self.output.info("--------------------------")
-            self.output.info("GstEditingServicesConan.package_info")
+            self.output.info("GstPluginsBadConan.package_info")
             self.output.info(json.dumps(self.__dict__, indent=4, sort_keys=True, skipkeys=True, default=lambda x: None) + "")
             self.output.info("--------------------------")
 
@@ -225,7 +248,7 @@ class GstEditingServicesConan(ConanFile):
     def source(self):
         if gst_conan.DEBUG_MODE:
             self.output.info("--------------------------")
-            self.output.info("GstEditingServicesConan.source")
+            self.output.info("GstPluginsBadConan.source")
             self.output.info(json.dumps(self.__dict__, indent=4, sort_keys=True, skipkeys=True, default=lambda x: None) + "")
             self.output.info("--------------------------")
 

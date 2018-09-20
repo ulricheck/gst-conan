@@ -34,7 +34,7 @@ class GstPluginsBaseConan(ConanFile):
     def __init__(self, output, runner, user, channel):
         ConanFile.__init__(self, output, runner, user, channel)
 
-        #  The names of executable files (without any possible file extension ... would be *.exe on windows)
+        #  The names of executable files without any possible file extension
         self.execNames =[
         ]
 

@@ -1,10 +1,6 @@
 # Roadmap
 We have several items on our radar. 
 
-## Create samples which consume the Conan packages
-Currently, we don't know whether our packages can be used properly.  We don't have any sample code which pulls in
-the Conan packages being built here.
-
 ## Follow best practices for Conan
 We would like to follow the best practices for Conan.
 

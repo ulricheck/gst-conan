@@ -22,7 +22,10 @@ class ExampleConsumeGes(ConanFile):
 
     # This is how we declare our dependencies to Conan.  GES will come with transitive dependencies.
     # We also need to handle the pkg_config_paths in the `build(self)` method.
-    requires = f"gst-editing-services/{GST_CONAN_VERSION}@{GST_CONAN_USER}/{GST_CONAN_CHANNEL}"
+    requires = ( f"gst-editing-services/{GST_CONAN_VERSION}@{GST_CONAN_USER}/{GST_CONAN_CHANNEL}",
+                     f"gst-plugins-good/{GST_CONAN_VERSION}@{GST_CONAN_USER}/{GST_CONAN_CHANNEL}",
+                      f"gst-plugins-bad/{GST_CONAN_VERSION}@{GST_CONAN_USER}/{GST_CONAN_CHANNEL}",
+                            f"gst-libav/{GST_CONAN_VERSION}@{GST_CONAN_USER}/{GST_CONAN_CHANNEL}")
 
     def build(self):
 

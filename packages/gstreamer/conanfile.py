@@ -1,5 +1,3 @@
-DEBUG_MODE = True
-
 from conans import ConanFile, Meson
 
 import os
@@ -36,7 +34,7 @@ class GstreamerConan(ConanFile):
     def __init__(self, output, runner, user, channel):
         ConanFile.__init__(self, output, runner, user, channel)
 
-        #  The names of executable files (without any possible file extension ... would be *.exe on windows)
+        #  The names of executable files without any possible file extension
         self.execNames =[
             "gst-inspect-1.0",
             "gst-launch-1.0",
@@ -274,6 +272,7 @@ class GstreamerConan(ConanFile):
         # We do this because the attribute usage does not seem to work:  `exports = "gst_conan"`
         # This copies the gst_conan package to the `export` folder (next to the conanfile.py)
         exportFolder = os.path.join(os.path.dirname(self.source_folder), "export")
+
         gst_conan.base.copytree(
             srcFolder=os.path.join(gstConanParentFolder, "gst_conan"),
             destFolder=os.path.join(exportFolder, "gst_conan"),

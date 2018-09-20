@@ -1,6 +1,6 @@
 # gst-conan
 This is a tool for building [Gstreamer](https://gstreamer.freedesktop.org/) components as [Conan](https://conan.io/) packages
-using the [Meson](https://mesonbuild.com/) build scripts included in the Gstreamer repositories.
+using the [Meson](https://mesonbuild.com/) build scripts which are included in the Gstreamer repositories.
 
 This tool is expected to work on most Linux distros (we guess).  In the future it may work on Mac and Windows (pending)
 work by other contributors in other Gstreamer repositories.
@@ -10,19 +10,19 @@ First time users should look at the [machine setup instructions](#machine-setup-
 ## Status
 This is a very new project and there is much work to be done.
 
-This tool can create 3 conan packages:
+This tool can create 6 conan packages:
+
  * [gstreamer](https://github.com/gstreamer/gstreamer)
  * [gst-plugins-base](https://github.com/gstreamer/gst-plugins-base)
  * [gst-editing-services](https://github.com/gstreamer/gst-editing-services)
-
-There also is [an example project](examples/consume-ges) which consumes the 3 packages above.
-
-The following are not done, but I will work on them soon:
  * [gst-plugins-good](https://github.com/gstreamer/gst-plugins-good)
  * [gst-plugins-bad](https://github.com/gstreamer/gst-plugins-bad)
- * [gst-plugins-ugly](https://github.com/gstreamer/gst-plugins-ugly)
  * [gst-libav](https://github.com/gstreamer/gst-libav)
- * [gst-rtsp-sever](https://github.com/gstreamer/gst-rtsp-server)
+
+There also is [an example project](examples/consume-ges) which consumes the packages above.
+
+I omitted [gst-plugins-ugly](https://github.com/gstreamer/gst-plugins-ugly) because I didn't want to sit and figure out
+which libraries I needed to install to get it working.
 
 ## How to use `gst-conan`
 Clone it and read the `--help` info. 
@@ -52,7 +52,8 @@ This repo is moderated by Panopto's media developers.  Your pull requests into t
 If you are unhappy with our moderation, you are welcome to fork the repo and moderate things differently.
 
 ## Roadmap
-There is plenty of room for [improvements](doc/roadmap.md) here.
+We have a [roadmap](doc/roadmap.md) for things that we'd like to improve, but we might not have time in the immediate
+future.
 
 ## Machine setup instructions
 
