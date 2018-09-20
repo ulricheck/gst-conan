@@ -10,12 +10,19 @@ First time users should look at the [machine setup instructions](#machine-setup-
 ## Status
 This is a very new project and there is much work to be done.
 
-Currently I have 3 conan packages and an example which consumes them:
- * gstreamer
- * gst-plugins-base
- * gst-editing-services 
+This tool can create 3 conan packages:
+ * [gstreamer](https://github.com/gstreamer/gstreamer)
+ * [gst-plugins-base](https://github.com/gstreamer/gst-plugins-base)
+ * [gst-editing-services](https://github.com/gstreamer/gst-editing-services)
 
-Currently, none of the plugins are being packaged; but I'll be working on it.
+There also is [an example project](examples/consume-ges) which consumes the 3 packages above.
+
+The following are not done, but I will work on them soon:
+ * [gst-plugins-good](https://github.com/gstreamer/gst-plugins-good)
+ * [gst-plugins-bad](https://github.com/gstreamer/gst-plugins-bad)
+ * [gst-plugins-ugly](https://github.com/gstreamer/gst-plugins-ugly)
+ * [gst-libav](https://github.com/gstreamer/gst-libav)
+ * [gst-rtsp-sever](https://github.com/gstreamer/gst-rtsp-server)
 
 ## How to use `gst-conan`
 Clone it and read the `--help` info. 

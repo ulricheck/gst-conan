@@ -16,7 +16,7 @@ Restart your terminal or execute `source ~/.bashrc`.
 ### 2. Install stuff
 ```bash
 sudo apt update
-sudo apt install --yes git python-pip python3-pip ninja-build build-essential libmount-dev libselinux-dev gobject-introspection libglib2.0-dev libgirepository1.0-dev libxml2-dev libavfilter-dev
+sudo apt install --yes git python-pip python3-pip ninja-build build-essential libmount-dev libselinux-dev libasound2-dev libglib2.0-dev libgirepository1.0-dev libxml2-dev libavfilter-dev libgl1-mesa-dev libgles2-mesa-dev libxv-dev
 pip3 install setuptools wheel
 pip3 install --user meson
 pip3 install conan

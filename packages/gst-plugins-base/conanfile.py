@@ -210,9 +210,16 @@ class GstPluginsBaseConan(ConanFile):
             gst_conan.base.copyOneFile(f"{staticLibName}{extLib}", srcLibFolder, destLibFolder, keepPath=False)
 
         # core plugins go into plugins folder
-        destPluginFolder = os.path.join(destLibFolder, "plugins")
+        destPluginFolder = os.path.join(self.package_folder, "plugins")
         for pluginName in self.pluginNames:
             if isLinux:
+                if gst_conan.DEBUG_MODE:
+                    self.output.info("--------------------------")
+                    self.output.info(f"pluginName=\"{pluginName}\"")
+                    self.output.info(f"buildFolder=\"{buildFolder}\"")
+                    self.output.info(f"destPluginFolder=\"{destPluginFolder}\"")
+                    self.output.info("gst_conan.base.copyOneSharedObjectFileGroup(pluginName, buildFolder, destPluginFolder, keepPath=False)")
+                    self.output.info("--------------------------")
                 gst_conan.base.copyOneSharedObjectFileGroup(pluginName, buildFolder, destPluginFolder, keepPath=False)
             else:
                 gst_conan.base.copyOneFile(f"{pluginName}{extSo}", buildFolder, destPluginFolder, keepPath=False)
@@ -251,7 +258,7 @@ class GstPluginsBaseConan(ConanFile):
 
             if pcName == "gstreamer-1.0":
                 pcFile.variables["toolsdir"] = "${prefix}/bin"
-                pcFile.variables["pluginsdir"] = "${libdir}/plugins"
+                pcFile.variables["pluginsdir"] = "${prefix}/plugins"
 
             pcFile.save(os.path.join(destPcFolder, f"{pcName}.pc"))
 

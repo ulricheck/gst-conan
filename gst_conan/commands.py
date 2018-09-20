@@ -4,13 +4,13 @@ import os
 import shutil
 import subprocess
 
-def create(packagesFolder:str, revision:str, version:str, buildtype:str, user:str, channel:str, extraArgs:list) -> None:
+def create(packagesFolder:str, revision:str, version:str, build_type:str, user:str, channel:str, extraArgs:list) -> None:
     '''
     Wraps the execution of `conan create` for all packages.  Throws on error.
     :param packagesFolder:  The folder which contains the conanfiles for all packages.
     :param revision: The revision to pull from all Gstreamer repos.  This can be a branch name, a sha, or a tag.
     :param version: The version of Gstreamer being packaged, and part of the conan package id.
-    :param buildtype:  The meson build type.  The value passed to meson after the `--buildtype` flag.
+    :param build_type:  The conan build_type setting ("Debug" or "Release").
     :param user: The user which is part of the conan package id.
     :param channel: The channel which is part of the conan package id.
     :param extraArgs:  A list of extra arguments to be passed to conan over the command line.
@@ -46,5 +46,5 @@ def create(packagesFolder:str, revision:str, version:str, buildtype:str, user:st
 
     for package in packageList:
         packageFolder = os.path.join(packagesFolder, package)
-        cmd = f"conan create {packageFolder} {package}/{version}@{user}/{channel} -s build_type={buildtype} {xargs}"
+        cmd = f"conan create {packageFolder} {package}/{version}@{user}/{channel} -s build_type={build_type} {xargs}"
         base.execute(cmd, env=env)

@@ -70,5 +70,11 @@ def test7():
     rePattern = re.compile('.+\.so\.[0-9\.]*\d+$')
     print(rePattern.fullmatch(text))
 
+def test8():
+    pluginName = "libgstalsa"
+    buildFolder = "/home/ding/.conan/data/gst-plugins-base/1.14.3/my_conan_user/my_conan_channel/build/1010277bd962c74fe8b33f2280b3c0af94266416/build"
+    destPluginFolder = "/home/ding/.conan/data/gst-plugins-base/1.14.3/my_conan_user/my_conan_channel/package/1010277bd962c74fe8b33f2280b3c0af94266416/lib/plugins"
+    gst_conan.base.copyOneSharedObjectFileGroup(pluginName, buildFolder, destPluginFolder, keepPath=False)
+
 if '__main__' == __name__:
-    test7()
+    test8()

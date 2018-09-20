@@ -1,4 +1,4 @@
-# These parameters must match the conan packages that you have built using `gst-conan create ...`
+# These parameters should match the conan packages that you have built using `gst-conan create ...`
 GST_CONAN_VERSION="1.14.3"
 GST_CONAN_USER="my_conan_user"
 GST_CONAN_CHANNEL="my_conan_channel"
@@ -41,25 +41,40 @@ class ExampleConsumeGes(ConanFile):
 
         # At this point, the executable has been created but it will not run without the shared object files (*.so or *.dll).
         # on it's path.  So let's get all the paths together
-        soPaths = []
+        libPaths = []
         for depName, dep in self.deps_cpp_info.dependencies:
             for libFolder in dep.libdirs:
-                soPaths.append(os.path.join(dep.rootpath, libFolder))
+                libPaths.append(os.path.join(dep.rootpath, libFolder))
+
+        # We also need to know where all the plugins are located (so we can tell gstreamer to load them).
+        pluginPaths = []
+        for depName, dep in self.deps_cpp_info.dependencies:
+            pluginPath = os.path.join(dep.rootpath, "plugins")
+            if os.path.isdir(pluginPath):
+                pluginPaths.append(pluginPath)
 
         # Save out the paths
-        with open("build/uninstalled-paths.json", "w") as writer:
-            json.dump(soPaths, fp=writer, indent=4)
+        paths = {
+            "lib": libPaths,
+            "pc": pcPaths,
+            "plugin": pluginPaths
+        }
+        with open("build/paths.json", "w") as writer:
+            json.dump(paths, fp=writer, indent=4)
+
 
         # Make a bash script for easy execution of the target
-        joinedPaths = ":".join(soPaths)
+        joinedLibPaths = ":".join(libPaths)
+        joinedPluginPaths = ":".join(pluginPaths)
         with open("build/run.sh", "w") as writer:
             writer.write("#!/bin/bash\n")
             writer.write("\n")
             writer.write('thisFolder="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"' + "\n")
             writer.write("\n")
-            writer.write(f"export LD_LIBRARY_PATH={joinedPaths}:$LD_LIBRARY_PATH\n")
+            writer.write(f"export LD_LIBRARY_PATH={joinedLibPaths}:$LD_LIBRARY_PATH\n")
+            writer.write(f"export GST_PLUGIN_PATH={joinedPluginPaths}\n")
             writer.write("\n")
-            writer.write(f"exec $thisFolder/consume-ges\n")
+            writer.write(f"exec $thisFolder/consume-ges \"$@\"\n")
 
         # Make the script executable
         os.chmod("build/run.sh", 0o755)

@@ -27,7 +27,7 @@ if '__main__' == __name__:
                               help="The revision of the gst-build.  This can be a sha, branch, or tag name.")
     createParser.add_argument("--version", dest="version", required=True,
                               help="The version of the conan artifacts.")
-    createParser.add_argument("--buildtype", dest="buildtype", default="Debug",
+    createParser.add_argument("--build_type", dest="build_type", default="Debug",
                               choices = gst_conan.build.conanBuildTypes(),
                               help="This sets the conan `build_type` setting.")
     createParser.add_argument("--user", dest="user", required=True,
@@ -44,6 +44,6 @@ if '__main__' == __name__:
     args, extraArgs = mainParser.parse_known_args()
 
     if args.verb == "create":
-        gst_conan.commands.create(packagesFolder, args.rev, args.version, args.buildtype, args.user, args.channel, extraArgs)
+        gst_conan.commands.create(packagesFolder, args.rev, args.version, args.build_type, args.user, args.channel, extraArgs)
     else:
         raise Exception("Unrecognized verb:  " + args.verb)

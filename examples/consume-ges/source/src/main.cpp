@@ -11,7 +11,14 @@ int main(int nargs, char** args)
 
     std::cout << "[BEGIN]  GES initialization" << std::endl;
     // Here we call something from the `gst-editing-services` package
-    ges_init();
+    if (ges_init())
+    {
+        std::cout << "GES was initialized successfully." << std::endl;
+    }
+    else
+    {
+        std::cout << "GES failed to initialize." << std::endl;
+    }
     std::cout << "[END]    GES initialization" << std::endl;
 
     std::cout << "DONE";

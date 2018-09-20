@@ -157,7 +157,7 @@ class GstreamerConan(ConanFile):
 
         # core plugins go into plugins folder
         srcPluginFolder = os.path.join(buildFolder, "plugins")
-        destPluginFolder = os.path.join(destLibFolder, "plugins")
+        destPluginFolder = os.path.join(self.package_folder, "plugins")
         for pluginName in self.pluginNames:
             if isLinux:
                 if gst_conan.DEBUG_MODE:
@@ -206,7 +206,7 @@ class GstreamerConan(ConanFile):
             pcFile.variables["includedir"] = "${prefix}/include"
 
             if pcName == "gstreamer-plugins-base-1.0" or pcName == "gstreamer-gl-1.0":
-                pcFile.variables["pluginsdir"] = "${libdir}/plugins"
+                pcFile.variables["pluginsdir"] = "${prefix}/plugins"
             else:
                 pcFile.variables["datarootdir"] = "${prefix}/data"
                 pcFile.variables["datadir"] = "${datarootdir}"
