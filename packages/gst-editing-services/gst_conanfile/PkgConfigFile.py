@@ -1,3 +1,6 @@
+# The same exact file exists next to each `conanfile.py` within this repo.
+# We are waiting for a Conan bug to get fixed:  https://github.com/conan-io/conan/issues/3591
+
 from collections import OrderedDict as odict
 
 import os

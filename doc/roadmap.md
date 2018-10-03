@@ -1,24 +1,33 @@
 # Roadmap
-We have several items on our radar. 
+
+We have several items on our radar.
 
 ## Follow best practices for Conan
-We would like to follow the best practices for Conan.
 
-### Build through conan
-Currently, we are only using Conan for the packaging step.  We are building the source outside of Conan because many of
-the Meson projects will not build unless they are under the parent-project of [gst-build](https://github.com/GStreamer/gst-build).
-We would like to figure out how to get around this restriction (of being forced to use the parent project) so that we
-can use Conan itself to link the inter-project dependencies and to drive each Meson build individually.
+We would like to follow the best practices for Conan (we are still learning).
 
-### Run tests through Conan
+### Run unit tests through Conan
+
 We should be able to run unit tests through Conan.
 
-### Install through Conan
-It is theoretically possible to convert a set of Conan packages into a set of packages for each distro (perhaps using
-`snap`).  We want to move towards this goal.  
+## Machine setup instructions for other Linux distros besides Mint 19
 
-## Extend functionality to Windows Platform
-Currently this only works on Linux (we guess).
+Presumably these scripts will work on other Linux distros besides Mint 19, Ubuntu 18.04, and related Debian distros.
+It's just a matter of figuring out which packages to install.
 
-## Extend functionaltiy to Darwin (Mac) Platform
-Currently this only works on Linux (we guess).
+We need to expand the `gst-conan setup` command to work on other popular distros.
+
+## Proper distro packages based on Conan packages
+
+It is theoretically possible to convert a set of Conan packages into a set of packages which can be installed on each
+distro (perhaps using `snap` or something like that).  In anticipation of moving towards this goal, the conan packages
+already contain `pkg-config` files for a typical target installation.  There is also a Python `PkgConfigFile` class
+which we can use to modify the `pkg-config` files easily.
+
+## Extend functionality to Windows and Darwin (Mac) Platform
+
+We have heard that the community is working on making the `meson.build` scripts work for Windows (and with a VS compiler).
+Presumably [cerbero](https://github.com/gstreamer/cerbero) will be required for that.  Once it's working through cerbero
+we will want to make it work here.
+
+We have no idea about Darwin (Mac).

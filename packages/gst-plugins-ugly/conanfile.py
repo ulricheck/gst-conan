@@ -13,11 +13,11 @@ import gst_conanfile
 # ----------------
 # Implement the ConanFile
 # ----------------
-class GstLibav(ConanFile):
-    name = "gst-libav"
+class GstPluginsUglyConan(ConanFile):
+    name = "gst-plugins-ugly"
     license = "LGPL"
-    url = "https://github.com/gstreamer/gst-libav"
-    description = "Gstreamer plugin for libav."
+    url = "https://github.com/gstreamer/gst-plugins-ugly"
+    description = "Ugly Gstreamer plugins and helper libraries."
     settings = "os", "compiler", "build_type", "arch"
     options = {}
     default_options = None
@@ -44,7 +44,11 @@ class GstLibav(ConanFile):
 
         # The names of the plugin files (without the *.so or *.dll extension)
         self.pluginNames = [
-            "libgstlibav"
+            "libgstasf",
+            "libgstdvdsub",
+            "libgstrealmedia",
+            "libgstxingmux",
+            "libgstdvdlpcmdec"
         ]
 
         # The names of the static library files (without the *.a or *.lib extension)
@@ -55,7 +59,6 @@ class GstLibav(ConanFile):
         self.gstRevision = os.getenv("GST_CONAN_REVISION", self.version)
 
     def build(self):
-
         pcPaths = [
             self.deps_cpp_info["gstreamer"].rootpath,
             self.deps_cpp_info["gst-plugins-base"].rootpath

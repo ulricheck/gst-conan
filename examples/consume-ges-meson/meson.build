@@ -16,11 +16,11 @@ cdata.set('PACKAGE_NAME', '"@0@"'.format(pkg_name))
 cdata.set('PACKAGE_VERSION', '"@0@"'.format(pkg_version))
 cdata.set('LICENSE', '"LGPL v3"')
 
-includeFolder = include_directories('include')
+includeFolder = include_directories('source/include')
 
 executable(
     pkg_name,
-    [ 'src/main.cpp'                              # all source files
+    [ 'source/src/main.cpp'                       # all source files
     ],
     include_directories: includeFolder,
     dependencies:

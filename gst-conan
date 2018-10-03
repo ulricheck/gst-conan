@@ -11,6 +11,9 @@ import os
 if '__main__' == __name__:
     scriptName = os.path.basename(__file__)
 
+    # ----------------------
+    # The main parser contains a sub-parser for each verb.
+    # ----------------------
     mainParser = argparse.ArgumentParser(description=scriptName + ":  Conan support for gstreamer.",
                                          formatter_class=argparse.RawTextHelpFormatter)
     verbParsers = mainParser.add_subparsers(title="verbs", dest="verb")
@@ -19,10 +22,9 @@ if '__main__' == __name__:
     # verb = create
     # ----------------------
     createParser = verbParsers.add_parser("create", description=\
-        "Clones github.com/Gstreamer/gst-build and builds everything."
         "Runs `conan create` on all projects (in the correct order).  "
-        "Extra arguments can be appended to the end of the command line, and they "
-        "will be attached to the end of all `conan create` commands.")
+        "You can append extra arguments to the end of this command, and they will be"
+        "attached to the end of all `conan create` commands.")
     createParser.add_argument("--rev", dest="rev", required=False, default="master",
                               help="The revision of the gst-build.  This can be a sha, branch, or tag name.")
     createParser.add_argument("--version", dest="version", required=True,
@@ -36,14 +38,31 @@ if '__main__' == __name__:
                               help="The conan user's channel, part of the `$user/$channel` expression.")
 
     # ----------------------
-    # wire command to it's implementation
+    # verb = setup
+    # ----------------------
+    setupParser = verbParsers.add_parser("setup", description= \
+        "Sets up the build machine (installs various packages).  Must be run with root privileges.")
+
+    # ----------------------
+    # verb = copy_gst_conanfile
+    # ----------------------
+    copyParser = verbParsers.add_parser("copy_gst_conanfile", description= \
+        "DEPRECATED:  This is a temporary bug workaround (see https://github.com/conan-io/conan/issues/3591).  "
+        "This command copies the 'packages/gstreamer/gst_conanfile' folder into all the other conan packages.")
+
+    # ----------------------
+    # Wire up implementation
     # ----------------------
     thisFolder = os.path.dirname(os.path.realpath(__file__))
     packagesFolder = os.path.join(thisFolder, "packages")
 
     args, extraArgs = mainParser.parse_known_args()
 
-    if args.verb == "create":
+    if args.verb == "copy_gst_conanfile":
+        gst_conan.commands.copy_gst_conanfile()
+    elif args.verb == "create":
         gst_conan.commands.create(packagesFolder, args.rev, args.version, args.build_type, args.user, args.channel, extraArgs)
+    elif args.verb == "setup":
+        gst_conan.commands.setup()
     else:
         raise Exception("Unrecognized verb:  " + args.verb)

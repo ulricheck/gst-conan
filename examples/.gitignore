@@ -1,3 +1,2 @@
-conanbuildinfo.txt
-conaninfo.txt
-**/build/
+**/cmake-build-*
+**/meson-build-*

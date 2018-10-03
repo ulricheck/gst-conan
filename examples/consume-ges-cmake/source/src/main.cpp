@@ -39,6 +39,17 @@ int main(int nargs, char** args)
         std::cout << "SUCCESS loading the 'hlssink' plugin from gst-plugins-bad" << std::endl;
     }
 
+    // Here we load an element from gst-plugins-ugly (hlssink)
+    GstElement* asfdemux = gst_element_factory_make("asfdemux", "asfdemux0");
+    if (nullptr == asfdemux)
+    {
+        std::cout << "FAILURE loading the 'asfdemux' plugin from gst-plugins-ugly" << std::endl;
+    }
+    else
+    {
+        std::cout << "SUCCESS loading the 'asfdemux' plugin from gst-plugins-ugly" << std::endl;
+    }
+
     // Here we load an element from gst-libav (avdec_aac)
     GstElement* avdec_aac = gst_element_factory_make("avdec_aac", "avdec_aac0");
     if (nullptr == avdec_aac)
