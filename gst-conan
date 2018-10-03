@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import sys
 if sys.version_info[0] < 3:
@@ -16,17 +16,20 @@ if '__main__' == __name__:
     # ----------------------
     mainParser = argparse.ArgumentParser(description=scriptName + ":  Conan support for gstreamer.",
                                          formatter_class=argparse.RawTextHelpFormatter)
-    verbParsers = mainParser.add_subparsers(title="verbs", dest="verb")
+    verbParsers = mainParser.add_subparsers(title="verbs", dest="verb",
+                              help="Try `./gst-conan VERB --help`")
 
     #----------------------
     # verb = create
     # ----------------------
     createParser = verbParsers.add_parser("create", description=\
         "Runs `conan create` on all projects (in the correct order).  "
-        "You can append extra arguments to the end of this command, and they will be"
+        "You can append extra arguments to the end of this command, and they will be "
         "attached to the end of all `conan create` commands.")
-    createParser.add_argument("--rev", dest="rev", required=False, default="master",
-                              help="The revision of the gst-build.  This can be a sha, branch, or tag name.")
+    createParser.add_argument("--rev", dest="rev", required=False, default=None,
+                              help="The revision of the gstreamer repos (typically a tag or branch name).  This defaults "
+                                   "to the value provided for `version`.  NOTE: If `--keep-source` or `--keep-build` is "
+                                   "forwarded to the `conan create ...` then this argument has no effect.")
     createParser.add_argument("--version", dest="version", required=True,
                               help="The version of the conan artifacts.")
     createParser.add_argument("--build_type", dest="build_type", default="Debug",
@@ -42,13 +45,17 @@ if '__main__' == __name__:
     # ----------------------
     setupParser = verbParsers.add_parser("setup", description= \
         "Sets up the build machine (installs various packages).  Must be run with root privileges.")
+    setupParser.add_argument("--exclude-optionals", dest="optionals", action="store_false", required=False, default=True,
+                             help="Exclude the dependencies for optional plugins")
 
     # ----------------------
-    # verb = copy_gst_conanfile
+    # verb = copy_exports_workaround
     # ----------------------
-    copyParser = verbParsers.add_parser("copy_gst_conanfile", description= \
+    copyParser = verbParsers.add_parser("copy_exports_workaround", description= \
         "DEPRECATED:  This is a temporary bug workaround (see https://github.com/conan-io/conan/issues/3591).  "
-        "This command copies the 'packages/gstreamer/gst_conanfile' folder into all the other conan packages.")
+        "This copies the 'gst_conan' and 'config' folder into all the other `packages/*` sub-folders within this repo so "
+        "they can be exported into the `exports` folder of the conan package.  This command is only helpful for a "
+        "developer who is modifying the code within the repo.  Normal users should ignore this command.")
 
     # ----------------------
     # Wire up implementation
@@ -58,11 +65,13 @@ if '__main__' == __name__:
 
     args, extraArgs = mainParser.parse_known_args()
 
-    if args.verb == "copy_gst_conanfile":
-        gst_conan.commands.copy_gst_conanfile()
+    if args.verb == "copy_exports_workaround":
+        gst_conan.commands.copy_exports_workaround()
     elif args.verb == "create":
+        if not args.rev:
+            args.rev = args.version
         gst_conan.commands.create(packagesFolder, args.rev, args.version, args.build_type, args.user, args.channel, extraArgs)
     elif args.verb == "setup":
-        gst_conan.commands.setup()
+        gst_conan.commands.setup(args.optionals)
     else:
         raise Exception("Unrecognized verb:  " + args.verb)

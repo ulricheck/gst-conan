@@ -1,30 +1,27 @@
 # Roadmap
 
-We have several items on our radar.
+There is plenty of room for improvement.
 
 ## Follow best practices for Conan
 
 We would like to follow the best practices for Conan (we are still learning).
 
-### Run unit tests through Conan
+### Integration with [bintray](https://bintray.com/conan/conan-center)
 
-We should be able to run unit tests through Conan.
+Unfortunately, the Conan packages defined here are not ready for bintray yet.  One challenge is that our builds
+require installing various libraries using the package manager for our Linux distro.  In a perfect world, the
+pre-requisites would already be available through bintray as Conan packages; but there is much work to do on
+that front (more than we have time for).
 
-## Machine setup instructions for other Linux distros besides Mint 19
+## Machine setup instructions for common Linux Distros
 
-Presumably these scripts will work on other Linux distros besides Mint 19, Ubuntu 18.04, and related Debian distros.
-It's just a matter of figuring out which packages to install.
+Machine setup is done through the `gst-conan setup` command.  Currently it has only been tested for Mint 19, and we 
+assume it will work for similar Debians (especially Ubuntu 18.04).
 
-We need to expand the `gst-conan setup` command to work on other popular distros.
+Presumably these scripts will work on most Linux distros, but some kind of package-manager setup is required.  We need
+to work on `gst-conan setup` so it works on other common Linux distros.
 
-## Proper distro packages based on Conan packages
-
-It is theoretically possible to convert a set of Conan packages into a set of packages which can be installed on each
-distro (perhaps using `snap` or something like that).  In anticipation of moving towards this goal, the conan packages
-already contain `pkg-config` files for a typical target installation.  There is also a Python `PkgConfigFile` class
-which we can use to modify the `pkg-config` files easily.
-
-## Extend functionality to Windows and Darwin (Mac) Platform
+## Packaging for Windows and Darwin (Mac) Platform
 
 We have heard that the community is working on making the `meson.build` scripts work for Windows (and with a VS compiler).
 Presumably [cerbero](https://github.com/gstreamer/cerbero) will be required for that.  Once it's working through cerbero

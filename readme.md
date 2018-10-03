@@ -7,7 +7,8 @@ using the [Meson](https://mesonbuild.com/) build scripts which are included in t
 
 First time users should look at the [machine setup instructions](doc/machine-setup.md).
 
-This tool is expected to work on most Linux distros (we guess), but it has only been tested on Mint 19.
+This tool is expected to work on most Linux distros (we guess), but we only have machine setup instructions for
+debian-ish systems (and it has only been tested on Mint 19).
 
 In the future it may work on Mac and Windows, but this is a long ways off.
 
@@ -24,8 +25,8 @@ This tool can create 6 conan packages:
  * [gst-libav](https://github.com/gstreamer/gst-libav)
 
 I also have two example projects which show how to consume the conan packages.
- * [a meson project](examples/consume-ges-meson).
- * [a cmake project](examples/consume-ges-cmake).
+ * [cmake example](examples/consume-ges-cmake)
+ * [meson example](examples/consume-ges-meson)
 
 ## How to use `gst-conan`
 
@@ -39,11 +40,11 @@ cd gst-conan
 
 ### How to create the Conan packages
 
-Use `gst-conan` to create several conan packages for Gstreamer `1.14.3` as follows.  The packages are published in your
+Use `gst-conan` to create several conan packages for Gstreamer `1.14.4` as follows.  The packages are published in your
 local Conan repo.
 
 ```bash
-./gst-conan create --rev 1.14.3 --version 1.14.3 --build_type Debug --user my_conan_user --channel my_conan_channel
+./gst-conan create --rev 1.14.4 --version 1.14.4 --build_type Debug --user my_conan_user --channel my_conan_channel
 ```
 
 ## Contributions are welcome

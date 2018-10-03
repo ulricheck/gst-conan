@@ -1,5 +1,5 @@
 # These parameters should match the conan packages that you have built using `gst-conan create ...`
-GST_CONAN_VERSION="1.14.3"
+GST_CONAN_VERSION="1.14.4"
 GST_CONAN_USER="my_conan_user"
 GST_CONAN_CHANNEL="my_conan_channel"
 
@@ -32,9 +32,9 @@ class ExampleConsumeGesMeson(ConanFile):
 
     def build(self):
         isLinux = False
-        if str(self.settings.os).lower().startswith("win"):
+        if self.settings.os == "Windows":
             extSo = ".dll"
-        elif str(self.settings.os).lower().startswith("lin"):
+        elif self.settings.os == "Linux":
             isLinux = True
             extSo = ".so"
         else:
@@ -74,7 +74,7 @@ class ExampleConsumeGesMeson(ConanFile):
                 pluginsAll += pluginsFound
 
         gstPluginScannerPath = os.path.join(self.deps_cpp_info["gstreamer"].rootpath, "bin", "gst-plugin-scanner")
-        if str(self.settings.os).lower().startswith("win"):
+        if self.settings.os == "Windows":
             gstPluginScannerPath += ".exe"
 
         # Save out the paths

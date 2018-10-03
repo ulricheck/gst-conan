@@ -1,5 +1,5 @@
 # These parameters should match the conan packages that you have built using `gst-conan create ...`
-GST_CONAN_VERSION="1.14.3"
+GST_CONAN_VERSION="1.14.4"
 GST_CONAN_USER="my_conan_user"
 GST_CONAN_CHANNEL="my_conan_channel"
 
@@ -23,7 +23,7 @@ class ExampleConsumeGesCmake(ConanFile):
     export_sources = "source/*"
 
     # This is how we declare our dependencies to Conan.  GES will come with transitive dependencies.
-    # We also need to handle the pkg_config_paths in the `build(self)` method.
+    # There is also some manual wiring in the CMakeLists.txt file (a workaround for cmake bug https://gitlab.kitware.com/cmake/cmake/issues/18150)
     requires = ( f"gst-editing-services/{GST_CONAN_VERSION}@{GST_CONAN_USER}/{GST_CONAN_CHANNEL}",
                      f"gst-plugins-good/{GST_CONAN_VERSION}@{GST_CONAN_USER}/{GST_CONAN_CHANNEL}",
                       f"gst-plugins-bad/{GST_CONAN_VERSION}@{GST_CONAN_USER}/{GST_CONAN_CHANNEL}",
@@ -33,23 +33,17 @@ class ExampleConsumeGesCmake(ConanFile):
     def build(self):
 
         isLinux = False
-        if str(self.settings.os).lower().startswith("win"):
+        if self.settings.os == "Windows":
             extSo = ".dll"
-        elif str(self.settings.os).lower().startswith("lin"):
+        elif self.settings.os == "Linux":
             isLinux = True
             extSo = ".so"
         else:
             raise Exception(f"Unsupported os: {self.settings.os}")
 
-        # This is how we pull tell Meson about our pkg-config paths.
-        # We need to wire the pkg_config_path for GES and it's transitive dependencies.
-        pcPaths = []
-        for depName, dep in self.deps_cpp_info.dependencies:
-            pcPaths.append(dep.rootpath)
-
         # Run the build with pkg-config paths from our dependencies.
         cmake = CMake(self)
-        cmake.configure(pkg_config_paths=pcPaths)
+        cmake.configure()
         cmake.build()
 
         # At this point, the executable has been created but it will not run without the shared object files (*.so or *.dll).
@@ -75,8 +69,13 @@ class ExampleConsumeGesCmake(ConanFile):
                 pluginsAll += pluginsFound
 
         gstPluginScannerPath = os.path.join(self.deps_cpp_info["gstreamer"].rootpath, "bin", "gst-plugin-scanner")
-        if str(self.settings.os).lower().startswith("win"):
+        if self.settings.os == "Windows":
             gstPluginScannerPath += ".exe"
+
+        # Let's keep track of our pkg-config paths in case someone else wants them later.
+        pcPaths = []
+        for depName, dep in self.deps_cpp_info.dependencies:
+            pcPaths.append(dep.rootpath)
 
         # Save out the paths
         paths = {

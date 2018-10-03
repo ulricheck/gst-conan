@@ -5,14 +5,14 @@ Before running the example, it is necessary to create the conan packages first. 
 
 ```bash
 # From the root folder of this repo:
-./gst-conan create --rev 1.14.3 --version 1.14.3 --build_type Debug --user my_conan_user --channel my_conan_channel
+./gst-conan create --rev 1.14.4 --version 1.14.4 --build_type Debug --user my_conan_user --channel my_conan_channel
 ```
 
 The values in the command above must match the values at the top of the `conanfile.py` in this folder.
  
 ```python
 # Top of conanfile.py for consume-ges-meson
-GST_CONAN_VERSION="1.14.3"
+GST_CONAN_VERSION="1.14.4"
 GST_CONAN_USER="my_conan_user"
 GST_CONAN_CHANNEL="my_conan_channel"
 ```

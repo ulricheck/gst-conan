@@ -1,0 +1,354 @@
+{
+    "gstreamer": {
+        "executables" : [
+            "gst-inspect-1.0",
+            "gst-launch-1.0",
+            "gst-stats-1.0",
+            "gst-typefind-1.0",
+            "gst-plugin-scanner"
+        ],
+        "pkgconfigs" : {
+            "gstreamer-1.0" : {
+                "lib" : "libgstreamer-1.0",
+                "gir" : "Gst-1.0"
+            },
+            "gstreamer-base-1.0" : {
+                "lib" : "libgstbase-1.0",
+                "gir" : "GstBase-1.0"
+            },
+            "gstreamer-check-1.0" : {
+                "lib" : "libgstcheck-1.0",
+                "gir" : "GstCheck-1.0"
+            },
+            "gstreamer-controller-1.0" : {
+                "lib" : "libgstcontroller-1.0",
+                "gir" : "GstController-1.0"
+            },
+            "gstreamer-net-1.0" : {
+                "lib" : "libgstnet-1.0",
+                "gir" : "GstNet-1.0"
+            }
+        },
+        "plugins" : {
+            "coreelements": {},
+            "coretracers": {}
+        },
+        "sharedlibs" : [],
+        "staticlibs" : [
+            "libcheck",
+            "libgstprintf"
+        ]
+    },
+    "gst-plugins-base": {
+        "executables" : [
+            "gst-discoverer-1.0"
+        ],
+        "pkgconfigs" : {
+            "gstreamer-allocators-1.0" : {
+                "lib" : "libgstallocators-1.0",
+                "gir" : "GstAllocators-1.0"
+            },
+            "gstreamer-app-1.0" : {
+                "lib" : "libgstapp-1.0",
+                "gir" : "GstApp-1.0"
+            },
+            "gstreamer-audio-1.0": {
+                "lib": "libgstaudio-1.0",
+                "gir": "GstAudio-1.0"
+            },
+            "gstreamer-fft-1.0": {
+                "lib": "libgstfft-1.0",
+                "gir": null
+            },
+            "gstreamer-gl-1.0": {
+                "lib": "libgstgl-1.0",
+                "gir": "GstGL-1.0"
+            },
+            "gstreamer-pbutils-1.0": {
+                "lib": "libgstpbutils-1.0",
+                "gir": "GstPbutils-1.0"
+            },
+            "gstreamer-plugins-base-1.0": {
+                "lib": null,
+                "gir": null
+            },
+            "gstreamer-riff-1.0": {
+                "lib": "libgstriff-1.0",
+                "gir": null
+            },
+            "gstreamer-rtp-1.0": {
+                "lib": "libgstrtp-1.0",
+                "gir": "GstRtp-1.0"
+            },
+            "gstreamer-rtsp-1.0": {
+                "lib": "libgstrtsp-1.0",
+                "gir": "GstRtsp-1.0"
+            },
+            "gstreamer-sdp-1.0": {
+                "lib": "libgstsdp-1.0",
+                "gir": "GstSdp-1.0"
+            },
+            "gstreamer-tag-1.0": {
+                "lib": "libgsttag-1.0",
+                "gir": "GstTag-1.0"
+            },
+            "gstreamer-video-1.0": {
+                "lib": "libgstvideo-1.0",
+                "gir": "GstVideo-1.0"
+            }
+        },
+        "plugins" : {
+            "adder": {},
+            "alsa": {},
+            "app": {},
+            "audioconvert": {},
+            "audiomixer": {},
+            "audiorate": {},
+            "audioresample": {},
+            "audiotestsrc": {},
+            "encoding": {},
+            "gio": {},
+            "opengl": {},
+            "pbtypes": {},
+            "playback": {},
+            "rawparse": {},
+            "subparse": {},
+            "tcp": {},
+            "typefindfunctions": {},
+            "videorate": {},
+            "videoscale": {},
+            "videotestsrc": {},
+            "volume": {},
+            "ximagesink": {},
+            "xvimagesink": {}
+        },
+        "sharedlibs" : [],
+        "staticlibs" : [
+            "libaudio_resampler_sse",
+            "libaudio_resampler_sse2",
+            "libaudio_resampler_sse41"
+        ]
+    },
+    "gst-editing-services" : {
+        "executables" : [
+            "ges-launch-1.0"
+        ],
+        "pkgconfigs" : {
+            "gst-editing-services-1.0" : {
+                "lib" : "libges-1.0",
+                "gir" : "GES-1.0"
+            }
+        },
+        "plugins" : {
+            "nle": {}
+        }
+    },
+    "gst-libav": {
+        "plugins" : {
+            "libav": {}
+        }
+    },
+    "gst-plugins-bad": {
+        "pkgconfigs" : {
+            "gstreamer-bad-audio-1.0" : {
+                "lib" : "libgstbadaudio-1.0",
+                "gir" : null
+            },
+            "gstreamer-bad-video-1.0" : {
+                "lib" : "libgstbadvideo-1.0",
+                "gir" : null
+            },
+            "gstreamer-codecparsers-1.0" : {
+                "lib" : "libgstcodecparsers-1.0",
+                "gir" : null
+            },
+            "gstreamer-insertbin-1.0" : {
+                "lib" : "libgstinsertbin-1.0",
+                "gir" : null
+            },
+            "gstreamer-mpegts-1.0" : {
+                "lib" : "libgstmpegts-1.0",
+                "gir" : null
+            },
+            "gstreamer-plugins-bad-1.0": {
+                "lib": null,
+                "gir": null
+            },
+            "gstreamer-player-1.0" : {
+                "lib" : "libgstplayer-1.0",
+                "gir" : null
+            },
+            "gstreamer-webrtc-1.0" : {
+                "lib" : "libgstwebrtc-1.0",
+                "gir" : null
+            }
+        },
+        "plugins" : {
+            "accurip": {},
+            "adpcmdec": {},
+            "adpcmenc": {},
+            "aiff": {},
+            "asfmux": {},
+            "audiobuffersplit": {},
+            "audiofxbad": {},
+            "audiolatency": {},
+            "audiomixmatrix": {},
+            "audiovisualizers": {},
+            "autoconvert": {},
+            "bayer": {},
+            "camerabin": {},
+            "coloreffects": {},
+            "compositor": {},
+            "curl": {},
+            "dashdemux": {},
+            "debugutilsbad": {},
+            "decklink": {},
+            "dtls": {},
+            "dvb": {},
+            "dvbsuboverlay": {},
+            "dvdspu": {},
+            "faac": {
+                "debians": ["libfaac-dev"],
+                "optional": true
+            },
+            "faad": {
+                "debians": ["libfaad-dev"],
+                "optional": true
+            },
+            "faceoverlay": {},
+            "fbdevsink": {},
+            "festival": {},
+            "fieldanalysis": {},
+            "freeverb": {},
+            "frei0r": {},
+            "gaudieffects": {},
+            "gdp": {},
+            "geometrictransform": {},
+            "hls": {},
+            "id3tag": {},
+            "inter": {},
+            "interlace": {},
+            "ipcpipeline": {},
+            "ivfparse": {},
+            "ivtc": {},
+            "jp2kdecimator": {},
+            "jpegformat": {},
+            "kms": {},
+            "legacyrawparse": {},
+            "midi": {},
+            "mpegpsdemux": {},
+            "mpegpsmux": {},
+            "mpegtsdemux": {},
+            "mpegtsmux": {},
+            "mxf": {},
+            "netsim": {},
+            "openglmixers": {},
+            "pcapparse": {},
+            "pnm": {},
+            "proxy": {},
+            "removesilence": {},
+            "rfbsrc": {},
+            "rtponvif": {},
+            "sdpelem": {},
+            "segmentclip": {},
+            "shm": {},
+            "siren": {},
+            "smooth": {},
+            "smoothstreaming": {},
+            "speed": {},
+            "stereo": {},
+            "subenc": {},
+            "timecode": {},
+            "videofiltersbad": {},
+            "videoframe_audiolevel": {},
+            "videoparsersbad": {},
+            "videosignal": {},
+            "vmnc": {},
+            "y4mdec": {},
+            "yadif": {}
+        },
+        "sharedlibs" : [
+            "libgstadaptivedemux-1.0",
+            "libgstisoff-1.0",
+            "libgstphotography-1.0",
+            "libgsturidownloader-1.0"
+        ],
+        "staticlibs" : [
+            "libparser"
+        ]
+    },
+    "gst-plugins-good": {
+        "plugins" : {
+            "alpha": {},
+            "alphacolor": {},
+            "apetag": {},
+            "audiofx": {},
+            "audioparsers": {},
+            "auparse": {},
+            "autodetect": {},
+            "cutter": {},
+            "deinterlace": {},
+            "debug": {},
+            "dtmf": {},
+            "effectv": {},
+            "equalizer": {},
+            "flv": {},
+            "goom": {},
+            "goom2k1": {},
+            "icydemux": {},
+            "id3demux": {},
+            "imagefreeze": {},
+            "interleave": {},
+            "isomp4": {},
+            "jpeg": {},
+            "level": {},
+            "matroska": {},
+            "monoscope": {},
+            "multifile": {},
+            "multipart": {},
+            "navigationtest": {},
+            "ossaudio": {},
+            "oss4": {},
+            "pulseaudio": {},
+            "rtp": {},
+            "rtpmanager": {},
+            "rtsp": {},
+            "shapewipe": {},
+            "smpte": {},
+            "spectrum": {},
+            "udp": {},
+            "video4linux2": {},
+            "videocrop": {},
+            "videofilter": {},
+            "videomixer": {},
+            "wavenc": {},
+            "wavparse": {},
+            "alaw": {},
+            "avi": {},
+            "flxdec": {},
+            "mulaw": {},
+            "replaygain": {},
+            "videobox": {},
+            "ximagesrc": {},
+            "y4menc": {}
+        },
+        "sharedlibs" : [
+        ],
+        "staticlibs" : [
+            "liblibparser"
+        ]
+    },
+    "gst-plugins-ugly": {
+        "plugins" : {
+            "asf": {},
+            "dvdlpcmdec": {},
+            "dvdsub": {},
+            "realmedia": {},
+            "x264": {
+                "debians": ["libx264-dev"],
+                "optional": true
+            },
+            "xingmux": {}
+        }
+    }
+  }
