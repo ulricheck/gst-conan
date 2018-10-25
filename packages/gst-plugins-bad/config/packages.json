@@ -115,6 +115,7 @@
             "subparse": {},
             "tcp": {},
             "typefindfunctions": {},
+            "videoconvert": {},
             "videorate": {},
             "videoscale": {},
             "videotestsrc": {},
