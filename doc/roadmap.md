@@ -6,12 +6,10 @@ There is plenty of room for improvement.
 
 We would like to follow the best practices for Conan (we are still learning).
 
-### Integration with [bintray](https://bintray.com/conan/conan-center)
-
-Unfortunately, the Conan packages defined here are not ready for bintray yet.  One challenge is that our builds
-require installing various libraries using the package manager for our Linux distro.  In a perfect world, the
-pre-requisites would already be available through bintray as Conan packages; but there is much work to do on
-that front (more than we have time for).
+In a perfect world, the only pre-requisites for building Conan packages should be other Conan packages.  But in this
+world, Gstreamer depends on a number of packages which have not been Conan-ized yet; and we we have a *machine setup*
+step which allows this to be built on *some* Linux distros.  We would like to communiity help to Conan-ize all of the
+Debian packages on which Gstreamer depends.  
 
 ## Machine setup instructions for common Linux Distros
 
