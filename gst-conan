@@ -7,6 +7,7 @@ if sys.version_info[0] < 3:
 import argparse
 import gst_conan
 import os
+import subprocess
 
 if '__main__' == __name__:
     scriptName = os.path.basename(__file__)
@@ -26,27 +27,25 @@ if '__main__' == __name__:
         "Runs `conan create` on all projects (in the correct order).  "
         "You can append extra arguments to the end of this command, and they will be "
         "attached to the end of all `conan create` commands.")
+    createParser.add_argument("--build_type", dest="build_type", default="Debug",
+                              choices=gst_conan.build.conanBuildTypes(),
+                              help="This sets the conan `build_type` setting.")
+    createParser.add_argument("--channel", dest="channel", required=True,
+                              help="The conan user's channel, part of the `$user/$channel` expression.")
+    createParser.add_argument("--docker", dest="docker", type=str, required=False, default=None,
+                              choices = gst_conan.build.dockerfileChoices(),
+                              help="(optional) Provide this argument to specify the name of a docker image to be used "
+                                   "to run the conan package creation (which includes the gstreamer build).  When this"
+                                   "argument is given, the build occurs inside of a docker container which mounts the "
+                                   "conan data folder on the host machine (typically ~/.conan/data).")
     createParser.add_argument("--rev", dest="rev", required=False, default=None,
                               help="The revision of the gstreamer repos (typically a tag or branch name).  This defaults "
                                    "to the value provided for `version`.  NOTE: If `--keep-source` or `--keep-build` is "
                                    "forwarded to the `conan create ...` then this argument has no effect.")
-    createParser.add_argument("--version", dest="version", required=True,
-                              help="The version of the conan artifacts.")
-    createParser.add_argument("--build_type", dest="build_type", default="Debug",
-                              choices = gst_conan.build.conanBuildTypes(),
-                              help="This sets the conan `build_type` setting.")
     createParser.add_argument("--user", dest="user", required=True,
                               help="The conan user, part of the `$user/$channel` expression.")
-    createParser.add_argument("--channel", dest="channel", required=True,
-                              help="The conan user's channel, part of the `$user/$channel` expression.")
-
-    # ----------------------
-    # verb = setup
-    # ----------------------
-    setupParser = verbParsers.add_parser("setup", description= \
-        "Sets up the build machine (installs various packages).  Must be run with root privileges.")
-    setupParser.add_argument("--exclude-optionals", dest="optionals", action="store_false", required=False, default=True,
-                             help="Exclude the dependencies for optional plugins")
+    createParser.add_argument("--version", dest="version", required=True,
+                              help="The version of the conan artifacts.")
 
     # ----------------------
     # verb = copy_exports_workaround
@@ -70,8 +69,18 @@ if '__main__' == __name__:
     elif args.verb == "create":
         if not args.rev:
             args.rev = args.version
-        gst_conan.commands.create(packagesFolder, args.rev, args.version, args.build_type, args.user, args.channel, extraArgs)
-    elif args.verb == "setup":
-        gst_conan.commands.setup(args.optionals)
+        if args.docker == None:
+            gst_conan.commands.createWithoutDocker(packagesFolder, args.rev, args.version, args.build_type, args.user, args.channel, extraArgs)
+        else:
+            # Prepare the args for the `create` command but without the "--docker xxxx" portion.
+            createArgs = sys.argv[1:]
+            idx = createArgs.index("--docker")
+            createArgs.pop(idx)
+            createArgs.pop(idx)
+
+            # Make the call
+            gst_conan.commands.createWithDocker(args.docker, subprocess.list2cmdline(createArgs))
+    elif args.verb != None:
+        raise Exception("Unrecognized verb (" + args.verb + ").  Command line was:  " + subprocess.list2cmdline(sys.argv))
     else:
-        raise Exception("Unrecognized verb:  " + args.verb)
+        raise Exception("Please specify a verb.  Command line was:  " + subprocess.list2cmdline(sys.argv))

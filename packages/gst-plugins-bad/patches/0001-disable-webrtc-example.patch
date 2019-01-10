@@ -1,0 +1,25 @@
+From 63b8f3ea8e6c0a443168f294b704be0496de08eb Mon Sep 17 00:00:00 2001
+From: "A. David Ing" <ing.dave@gmail.com>
+Date: Tue, 8 Jan 2019 14:30:51 -0800
+Subject: [PATCH] disable webrtc example
+
+---
+ tests/examples/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/examples/meson.build b/tests/examples/meson.build
+index 356587f69..b91126bba 100644
+--- a/tests/examples/meson.build
++++ b/tests/examples/meson.build
+@@ -11,7 +11,7 @@ subdir('mpegts')
+ #subdir('opencv')
+ #subdir('uvch264')
+ #subdir('waylandsink')
+-subdir('webrtc')
++#subdir('webrtc')
+ 
+ executable('playout',
+   'playout.c',
+-- 
+2.17.1
+

@@ -39,13 +39,33 @@ class GstPluginsGoodConan(ConanFile):
 
     def build(self):
         pcPaths = [
-            os.path.join(self.deps_cpp_info["gstreamer"].rootpath),
-            os.path.join(self.deps_cpp_info["gst-plugins-base"].rootpath)
+            self.deps_cpp_info["gstreamer"].rootpath,
+            self.deps_cpp_info["gst-plugins-base"].rootpath
         ]
 
         meson = Meson(self)
         meson.configure(source_folder=self.name, build_folder="build", pkg_config_paths=pcPaths)
         meson.build()
+
+        # ----------------------------------
+        # Create gstreamer-plugins-good-1.0.pc:  The GES build requires it even though it serves no actual purpose.
+        # ----------------------------------
+        pcFileContents="""prefix=
+exec_prefix=${prefix}
+libdir=${prefix}/lib/x86_64-linux-gnu
+includedir=${prefix}/include/gstreamer-1.0
+pluginsdir=${prefix}/lib/x86_64-linux-gnu/gstreamer-1.0
+
+
+Name: GStreamer Good Plugin libraries
+Description: Streaming media framework, good plugins libraries
+Requires: gstreamer-1.0  gstreamer-plugins-base-1.0
+Version: """ + str(self.version) + "\n" + \
+"""Libs: 
+Cflags: 
+"""
+        with open(os.path.join(self.build_folder, "build", "pkgconfig", "gstreamer-plugins-good-1.0.pc"), 'w') as pcFile:
+            pcFile.write(pcFileContents)
 
     def configure(self):
         # Environment variables that only exist when `conan` is called through gst-conan
@@ -56,7 +76,7 @@ class GstPluginsGoodConan(ConanFile):
         self.packageInfo = self.config.packages[self.name]
 
     def package(self):
-        # package include files
+        # include files
         self.copy("*.h", dst="include", src=f"{self.name}")
 
         # package the rest

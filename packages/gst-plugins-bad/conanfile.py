@@ -40,9 +40,29 @@ class GstPluginsBadConan(ConanFile):
     # ... but it doesn't work.  Soft links don't work either.  See https://github.com/conan-io/conan/issues/3591.
     #
     # So these folders have been copied multiple times within the repo.
-    exports = "gst_conan/*", "config/*"
+    exports = "gst_conan/*", "config/*", "patches/*"
 
     def build(self):
+        # ---------------------------
+        # Apply patches
+        # * 0001-disable-webrtc-example.patch
+        #   * fixes https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/issues/867
+        # ---------------------------
+        repoFolder = os.path.join(self.build_folder, self.name)
+        gst_conan.base.execute("git config user.email gst_conan@panopto.com", workingFolder=repoFolder)
+        gst_conan.base.execute("git config user.name  gst_conan", workingFolder=repoFolder)
+
+        patchFolder = os.path.join(self.build_folder, "patches")
+        if os.path.isdir(patchFolder):
+            for file in os.listdir(patchFolder):
+                patchPath = os.path.join(patchFolder, file)
+                if file.endswith(".patch") and os.path.isfile(patchPath):
+                    self.output.info(f"Applying patch {file}")
+                    gst_conan.base.execute(f"git am {patchPath}", workingFolder=repoFolder)
+
+        # ---------------------------
+        # Build as usual
+        # ---------------------------
         pcPaths = [
             self.deps_cpp_info["gstreamer"].rootpath,
             self.deps_cpp_info["gst-plugins-base"].rootpath
@@ -76,6 +96,6 @@ class GstPluginsBadConan(ConanFile):
         self.requires(f"gst-plugins-base/{self.version}@{self.user}/{self.channel}")
 
     def source(self):
-        # This is what actually belongs here.
+        # Clone
         self.run(f"git clone --recurse-submodules https://github.com/gstreamer/{self.name}.git -b {self.gstRevision}")
         self.run(f"cd {self.name}")

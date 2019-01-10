@@ -41,12 +41,18 @@ class GstEditingServicesConan(ConanFile):
     def build(self):
         pcPaths = [
             self.deps_cpp_info["gstreamer"].rootpath,
-            self.deps_cpp_info["gst-plugins-base"].rootpath
+            self.deps_cpp_info["gst-plugins-base"].rootpath,
+            self.deps_cpp_info["gst-plugins-bad"].rootpath,
+            self.deps_cpp_info["gst-plugins-good"].rootpath
         ]
 
         meson = Meson(self)
         meson.configure(source_folder=self.name, build_folder="build", pkg_config_paths=pcPaths)
         meson.build()
+
+    def build_requirements(self):
+        self.build_requires(f"gst-plugins-bad/{self.version}@{self.user}/{self.channel}")
+        self.build_requires(f"gst-plugins-good/{self.version}@{self.user}/{self.channel}")
 
     def configure(self):
         # Environment variables that only exist when `conan` is called through gst-conan

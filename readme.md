@@ -30,7 +30,15 @@ I also have two example projects which show how to consume the conan packages.
 
 ## How to use `gst-conan`
 
-Clone it and read the `--help` info. 
+Make sure `conan` is installed.
+
+```bash
+pip3 install --user conan
+```
+
+We recommend that you have `docker` installed.
+
+Clone the `gst-conan` repo and read the `--help` info. 
 
 ```bash
 git clone https://github.com/Panopto/gst-conan
@@ -38,13 +46,31 @@ cd gst-conan
 ./gst-conan --help
 ```
 
-### How to create the Conan packages
+### How to create the Conan packages via Docker (recommended)
+
+Make sure `docker` is installed.
 
 Use `gst-conan` to create several conan packages for Gstreamer `1.14.4` as follows.  The packages are published in your
 local Conan repo.
 
 ```bash
-./gst-conan create --rev 1.14.4 --version 1.14.4 --build_type Debug --user my_conan_user --channel my_conan_channel
+./gst-conan create --docker ubuntu-18.04 --rev 1.14.4 --version 1.14.4 --build_type Debug --user my_conan_user --channel my_conan_channel --keep-source
+```
+
+#### Need to debug the build?
+You can poke around inside the docker container like this:
+
+```bash
+docker run -it --mount type=bind,src=$HOME/.conan/data,dst=/home/default_user/.conan/data gst-conan_ubuntu-18.04:latest 'bash'
+```
+
+### How to create the Conan packages without Docker (not recommend)
+
+Use `gst-conan` to create several conan packages for Gstreamer `1.14.4` as follows.  The packages are published in your
+local Conan repo.
+
+```bash
+./gst-conan create --rev 1.14.4 --version 1.14.4 --build_type Debug --user my_conan_user --channel my_conan_channel --keep-source
 ```
 
 ## Contributions are welcome

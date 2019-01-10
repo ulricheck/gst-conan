@@ -38,6 +38,23 @@ class GstPluginsBaseConan(ConanFile):
     # So these folders have been copied multiple times within the repo.
     exports = "gst_conan/*", "config/*"
 
+    @staticmethod
+    def applyWorkaround537(pkgConfigFile):
+        '''
+        # workaround for https://gitlab.freedesktop.org/gstreamer/gst-plugins-base/issues/537
+        # There is a problem with the `gstreamer-pbutils-1.0.pc` file
+        :param pkgConfigFile: The path to the file to be repaired.
+        '''
+        pc = gst_conan.build.PkgConfigFile()
+        pc.load(pkgConfigFile)
+
+        requirements = ["  gstreamer-audio-1.0", " gstreamer-tag-1.0"]
+        for requirement in requirements:
+            if requirement not in pc.requires:
+                pc.requires += requirement
+
+        pc.save(pkgConfigFile)
+
     def build(self):
         pcPaths = [
             self.deps_cpp_info["gstreamer"].rootpath
@@ -66,6 +83,12 @@ class GstPluginsBaseConan(ConanFile):
         # package the rest
         buildOutputFolder = os.path.join(self.build_folder, "build")
         gst_conan.build.doConanPackage(self, self.packageInfo, buildOutputFolder)
+
+        # workaround for https://gitlab.freedesktop.org/gstreamer/gst-plugins-base/issues/537
+        # There is a problem with the `gstreamer-pbutils-1.0.pc` file
+
+        self.__class__.applyWorkaround537(os.path.join(self.package_folder, "gstreamer-pbutils-1.0.pc"))
+        self.__class__.applyWorkaround537(os.path.join(self.package_folder, "pc-installed", "gstreamer-pbutils-1.0.pc"))
 
     def package_info(self):
         gst_conan.build.doConanPackageInfo(self, self.packageInfo)

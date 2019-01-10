@@ -24,6 +24,9 @@ def basenames(filenames:list) -> list:
 
     return output
 
+def conanDataFolderWithinDockerContainers() -> str:
+    return "/home/default_user/.conan/data"
+
 def currentUserIsPrivileged() -> bool:
     '''
     Determines whether the user has root (on linux) or administrative (on windows) privileges.
@@ -181,10 +184,18 @@ def getEnv(name:str) -> str:
 
 def gstConanConfigFolder() -> str:
     '''
-    Gets the folder inside which the `gst_conan` config data is located
+    Gets the folder inside which the `gst-conan/config` data is located
     :return: The absolute folder path.
     '''
     output = os.path.join(gstConanFolder(), "config")
+    return output
+
+def gstConanDockersFolder() -> str:
+    '''
+    Gets the folder inside which the `gst-conan/dockers` Dockerfiles are stored.
+    :return: The absolute folder path.
+    '''
+    output = os.path.join(gstConanFolder(), "dockers")
     return output
 
 def gstConanFolder() -> str:
@@ -193,7 +204,7 @@ def gstConanFolder() -> str:
     from a conan package, in which case this is the "exports" folder (which contains the conanfile).
     :return: The absolute folder path.
     '''
-    output = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    output = os.path.dirname(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
     return output
 
 def isDarwin() -> bool:
@@ -235,3 +246,18 @@ def raiseError(message:str) -> None:
     print("")
     print("")
     raise Exception(message)
+
+def readNonEmptyLines(filename:str) -> list:
+    '''
+    Reads lines from a file.  Strips the newline character from each line.  Ignores empty lines.
+    :param filename: The file from which entries are read.
+    :return: A list where each entry is a non-empty line of the file.
+    '''
+    output = []
+    with open(filename, "r") as f:
+        for line in f:
+            txt = line.rstrip("\n").rstrip("\r")
+            if len(txt) > 0:
+                output.append(txt)
+
+    return output

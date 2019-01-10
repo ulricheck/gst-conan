@@ -130,20 +130,6 @@
             "libaudio_resampler_sse41"
         ]
     },
-    "gst-editing-services" : {
-        "executables" : [
-            "ges-launch-1.0"
-        ],
-        "pkgconfigs" : {
-            "gst-editing-services-1.0" : {
-                "lib" : "libges-1.0",
-                "gir" : "GES-1.0"
-            }
-        },
-        "plugins" : {
-            "nle": {}
-        }
-    },
     "gst-libav": {
         "plugins" : {
             "libav": {}
@@ -209,11 +195,9 @@
             "dvbsuboverlay": {},
             "dvdspu": {},
             "faac": {
-                "debians": ["libfaac-dev"],
                 "optional": true
             },
             "faad": {
-                "debians": ["libfaad-dev"],
                 "optional": true
             },
             "faceoverlay": {},
@@ -279,6 +263,12 @@
         ]
     },
     "gst-plugins-good": {
+        "pkgconfigs" : {
+            "gstreamer-plugins-good-1.0": {
+                "lib": null,
+                "gir": null
+            }
+        },
         "plugins" : {
             "alpha": {},
             "alphacolor": {},
@@ -346,10 +336,23 @@
             "dvdsub": {},
             "realmedia": {},
             "x264": {
-                "debians": ["libx264-dev"],
                 "optional": true
             },
             "xingmux": {}
         }
+    },
+    "gst-editing-services" : {
+        "executables" : [
+            "ges-launch-1.0"
+        ],
+        "pkgconfigs" : {
+            "gst-editing-services-1.0" : {
+                "lib" : "libges-1.0",
+                "gir" : "GES-1.0"
+            }
+        },
+        "plugins" : {
+            "nle": {}
+        }
     }
-  }
+}

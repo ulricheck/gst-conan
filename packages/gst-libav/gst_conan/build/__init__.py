@@ -1,6 +1,7 @@
 from   collections import OrderedDict as odict
 from   conans import ConanFile
 import fnmatch
+import glob
 import os
 import re
 import shutil
@@ -178,6 +179,22 @@ def copytree(srcFolder:str, destFolder:str, includeSubfolders:bool=True, onlyNew
                 doCopy = os.path.getmtime(src) > os.path.getmtime(dest)
             if doCopy:
                 shutil.copy2(src, dest)
+
+def dockerfileChoices() -> list:
+    '''
+    The list of choices for docker containers which can be used to build the conan packages.  This is basically
+    the list of folders under `gst-conan/dockers` (where each folder contains a dockerfile).
+    :return:
+    '''
+    dockersFolder = base.gstConanDockersFolder()
+
+    output = list(set(glob.glob(dockersFolder + "/*/Dockerfile")))
+    for i, dockerfile in enumerate(output):
+        output[i] = os.path.basename(os.path.dirname(dockerfile))
+
+    output.sort()
+
+    return output
 
 def doConanPackage(conanfile:ConanFile, packageInfo:configuration.PackageInfo, buildOutputFolder:str) -> None:
     '''
