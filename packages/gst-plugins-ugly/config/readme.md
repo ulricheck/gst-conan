@@ -1,10 +1,8 @@
-### `debians.json`
-The non-optional debian (*.deb) packages required to build.
-
-### `fedoras.json`
-The non-optional fedora (*.rpm) packages required to build.
-
 ### `packages.json`
 Information about each conan package.
 
-I don't understand why `gst-plugins-bad` exports `*.pc` files.
+## bug workaround
+This same exact folder exists next to every `conanfile.py` in this repo because we are working around a known
+[bug](https://github.com/conan-io/conan/issues/3591).
+
+See also the `copy_exports_workaround` command in the command-line API.

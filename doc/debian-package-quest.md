@@ -1,7 +1,7 @@
-# debian package quest 
-I struggled to find the correct set of debian packages to make this work.
+# The quest for the right debian packages 
+I struggled to find the correct set of debian packages to make this work on `ubuntu-18.04`.
 
-## the current set of debian packages
+## The current set of debian packages
 I determined the current set of debian packages by executing the following command on Linux Mint 19.1 (equivalent to Ubuntu 18.04).
 
 ```bash
@@ -41,77 +41,13 @@ ninja-build
 pkg-config
 ```
 
-## a failed attempt (not the current set of packages)
+## Another different set which might have worked
+I put together the set of packages below through careful analysis of the meson build output and through
+[package searching](https://packages.ubuntu.com/).   This set might have worked but I never checked it.  I abandoned
+this approach when I hit a [build problem](https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/issues/867) which
+(as it turns out) had nothing to do with the set of packages that were installed.
 
-```text
-autoconf
-automake
-autopoint
-autotools-dev
-bison
-build-essential
-cmake
-curl
-debhelper
-devscripts
-doxygen
-dpkg-dev
-fakeroot
-flex
-g++
-gettext
-git
-glib-networking
-gperf
-gtk-doc-tools
-intltool
-libasound2-dev
-libavfilter-dev
-libcurl4-openssl-dev
-libdbus-glib-1-dev
-libegl1-mesa-dev
-libfaac-dev
-libfaad-dev
-libgirepository1.0-dev
-libgl1-mesa-dev
-libgles2-mesa-dev
-libglib2.0-dev
-libglu1-mesa-dev
-libjpeg-turbo8-dev
-libmount-dev
-liborc-0.4-dev
-libpulse-dev
-libselinux-dev
-libtool
-libx11-dev
-libx264-dev
-libxcomposite-dev
-libxdamage-dev
-libxext-dev
-libxfixes-dev
-libxi-dev
-libxml-simple-perl
-libxml2-dev
-libxrandr-dev
-libxrender-dev
-libxtst-dev
-libxv-dev
-make
-ninja-build
-pkg-config
-python-dev
-python3-dev
-python-pip
-python3-pip
-texinfo
-transfig
-wget
-x11proto-record-dev
-xutils-dev
-yasm
-```
-
-## a failed attempt (not the current set of packages)
+We should refer to this set later if we find problems with our current set of packages.
 
 ```text
 autoconf

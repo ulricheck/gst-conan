@@ -73,6 +73,43 @@ local Conan repo.
 ./gst-conan create --rev 1.14.4 --version 1.14.4 --build_type Debug --user my_conan_user --channel my_conan_channel --keep-source
 ```
 
+### How to publish conan packages
+After creating the packages, you may want to publish them to [their home on bintray](https://bintray.com/panopto-oss/gst-conan).
+
+First, let's define some constants.
+
+```bash
+BINTRAY_API_KEY="you_find_the_key"
+GSTREAMER_VERSION="1.14.4"
+GIT_TAG="$GSTREAMER_VERSION@panopto/unstable"
+```
+
+Authenticate yourself.
+
+```bash
+conan remote add panopto-oss https://api.bintray.com/conan/panopto-oss/gst-conan
+conan user --password $BINTRAY_API_KEY --remote panopto-oss panopto-oss
+```
+
+Do a dry run by including the `--skip-upload` flag.
+
+```bash
+conan upload --skip-upload --check --confirm --remote panopto-oss gst*/$GIT_TAG
+```
+
+Perform the upload.
+
+```bash
+conan upload --check --confirm --remote panopto-oss gst*/$GIT_TAG
+```
+
+Tag the relevant `git` commit. 
+
+```bash
+git tag $GIT_TAG
+git push --tags
+```
+
 ## Contributions are welcome
 
 This repo is moderated by Panopto's media developers.  Your pull requests into this repo are welcome.
