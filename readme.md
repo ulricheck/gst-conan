@@ -58,11 +58,16 @@ local Conan repo.
 ```
 
 #### Need to debug the build?
-You can poke around inside the docker container like this:
+You can poke around inside the docker container as follows where the conan storage folder on your host machine
+(`~/.conan/data` by default) is denoted as `$CONAN_STORAGE_FOLDER`. 
 
 ```bash
-docker run -it --mount type=bind,src=$HOME/.conan/data,dst=/home/default_user/.conan/data gst-conan_ubuntu-18.04:latest 'bash'
+docker run -it --mount type=bind,src=$CONAN_STORAGE_FOLDER,dst=$CONAN_STORAGE_FOLDER gst-conan_ubuntu-18.04:latest 'bash'
 ```
+
+Note that in the expression above, the `CONAN_STORAGE_FOLDER` is the same on the host machine and inside the docker
+container.  This is done so that users can consume the debug symbols in a way that points their debugger the location of
+the source code on the host machine. 
 
 ### How to create the Conan packages without Docker (not recommend)
 
