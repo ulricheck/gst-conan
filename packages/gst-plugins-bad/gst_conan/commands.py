@@ -46,11 +46,17 @@ def createWithDocker(dockerRecipeId:str, createArgs:str) -> None:
 
     dockerImageTag = f"gst-conan_{dockerRecipeId}:latest"
 
+    conanStorageFolder = os.path.expanduser(build.conanStorageFolder())
+
     # ---------------------------------
 
     print("[BEGIN] Docker build (setting up docker container)")
 
-    base.execute(f"docker build . --file {base.gstConanDockersFolder()}/{dockerRecipeId}/Dockerfile --tag {dockerImageTag}",
+    base.execute("docker build . "
+                     f"--file {base.gstConanDockersFolder()}/{dockerRecipeId}/Dockerfile "
+                     f"--tag {dockerImageTag} "
+                     f"--build-arg CONAN_STORAGE_PATH={conanStorageFolder} "
+                     f"--build-arg CONAN_VERSION={build.conanVersion()} ",
                  workingFolder=base.gstConanFolder())
 
     print("[END] Docker build (setting up docker container)")
@@ -58,16 +64,14 @@ def createWithDocker(dockerRecipeId:str, createArgs:str) -> None:
     # ---------------------------------
 
     print("[BEGIN] Docker run (building conan packages)")
-    print("    createArgs = " + createArgs)
+    gstConanCmd = "gst-conan " + createArgs
+    print("    " + gstConanCmd)
 
-    hostFolder=config.conanDataFolder()
-    os.makedirs(hostFolder, exist_ok=True)
-
-    containerFolder=base.conanDataFolderWithinDockerContainers()
+    os.makedirs(conanStorageFolder, exist_ok=True)
 
     base.execute(
-        f"docker run --mount type=bind,src={hostFolder},dst={containerFolder} {dockerImageTag} " \
-            + shlex.quote(f"gst-conan {createArgs}") )
+        f"docker run --mount type=bind,src={conanStorageFolder},dst={conanStorageFolder} {dockerImageTag} " \
+            + shlex.quote(gstConanCmd) )
 
     print("[END] Docker run (building conan packages)")
 
