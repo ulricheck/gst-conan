@@ -3,6 +3,8 @@
 This is a tool for building [Gstreamer](https://gstreamer.freedesktop.org/) components as [Conan](https://conan.io/) packages
 using the [Meson](https://mesonbuild.com/) build scripts which are included in the Gstreamer repositories.
 
+This is the tool used to the conan packages listed in [our repo on bintray](https://bintray.com/panopto-oss/gst-conan).
+
 ## Machine setup instructions
 
 First time users should look at the [machine setup instructions](doc/machine-setup.md).
@@ -14,7 +16,7 @@ In the future it may work on Mac and Windows, but this is a long ways off.
 
 ## Status
 
-This tool can create 6 conan packages:
+This tool can help you create many conan packages:
 
  * [gstreamer](https://github.com/gstreamer/gstreamer)
  * [gst-plugins-base](https://github.com/gstreamer/gst-plugins-base)
@@ -57,7 +59,7 @@ local Conan repo.
 ./gst-conan create --docker ubuntu-18.04 --rev 1.14.4 --version 1.14.4 --build_type Debug --user my_conan_user --channel my_conan_channel --keep-source
 ```
 
-#### Need to debug the build?
+#### Need to debug the docker container?
 You can poke around inside the docker container as follows where the conan storage folder on your host machine
 (`~/.conan/data` by default) is denoted as `$CONAN_STORAGE_FOLDER`. 
 
@@ -65,8 +67,11 @@ You can poke around inside the docker container as follows where the conan stora
 docker run -it --mount type=bind,src=$CONAN_STORAGE_FOLDER,dst=$CONAN_STORAGE_FOLDER gst-conan_ubuntu-18.04:latest 'bash'
 ```
 
-Note that in the expression above, the `CONAN_STORAGE_FOLDER` is the same on the host machine and inside the docker
-container.  This is done so that users can consume the debug symbols in a way that points their debugger the location of
+The expression above reveals how the `CONAN_STORAGE_FOLDER` is the same on the host machine and inside the docker container.
+There are at least 2 reasons why this is required.
+
+1.  For correct linkage to `pkg-config` files (and between them).
+2.  So that users can consume the debug symbols in a way that points their debugger the location of
 the source code on the host machine. 
 
 ### How to create the Conan packages without Docker (not recommend)
@@ -106,6 +111,12 @@ Perform the upload.
 
 ```bash
 conan upload --check --confirm --remote panopto-oss gst*/$GIT_TAG
+```
+
+Make sure the tag does not already apply to any other commits.
+```bash
+git tag --delete $GIT_TAG          # local
+git push --delete origin $GIT_TAG  # remote
 ```
 
 Tag the relevant `git` commit. 

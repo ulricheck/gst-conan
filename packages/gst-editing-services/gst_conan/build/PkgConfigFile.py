@@ -51,6 +51,34 @@ class PkgConfigFile:
         # Variables
         self.variables = odict()
 
+    def ensureRequires(self, requirement) -> None:
+        '''
+        Ensures the requirement is part of self.requires
+        :param requirement: The requirement (string) or list of requirements (set, list, tuple)
+        :return: Nothing
+        '''
+        if isinstance(requirement, (list, tuple, set)):
+            for r in requirement:
+                self.ensureRequires(r)
+        elif self.requires == None or len(self.requires) == 0:
+            self.requires = requirement
+        elif requirement not in self.requires:
+            self.requires += (" " + requirement)
+
+    def ensureRequiresPrivate(self, requirement) -> None:
+        '''
+        Ensures the requirement is part of self.requiresPrivate
+        :param requirement: The requirement (string) or list of requirements (set, list, tuple)
+        :return: Nothing
+        '''
+        if isinstance(requirement, (list, tuple, set)):
+            for r in requirement:
+                self.ensureRequiresPrivate(r)
+        elif self.requiresPrivate == None or len(self.requiresPrivate) == 0:
+            self.requiresPrivate = requirement
+        elif requirement not in self.requiresPrivate:
+            self.requiresPrivate += (" " + requirement)
+
     def load(self, filename:str):
         with open(filename, "r") as reader:
             for rawLine in reader:
