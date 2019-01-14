@@ -31,6 +31,8 @@ class GstPluginsUglyConan(ConanFile):
     default_options = \
         "x264=True"
 
+    build_policy = "outdated"
+
     # It would be nice to export like this ...
 
     #   exports = "../../gst_conan/*", "../../config/*"

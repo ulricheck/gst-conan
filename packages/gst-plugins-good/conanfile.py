@@ -27,6 +27,7 @@ class GstPluginsGoodConan(ConanFile):
     }
     options = {}
     default_options = None
+    build_policy = "outdated"
 
     # It would be nice to export like this ...
 

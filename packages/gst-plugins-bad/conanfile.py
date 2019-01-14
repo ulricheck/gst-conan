@@ -32,6 +32,7 @@ class GstPluginsBadConan(ConanFile):
         "faac=True",
         "faad=True"
     )
+    build_policy = "outdated"
 
     # It would be nice to export like this ...
 
