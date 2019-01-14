@@ -20,16 +20,6 @@ def conanBuildTypes() -> list:
     '''
     return ["Debug", "Release"]
 
-def conanVersion() -> str:
-    # Here we don't use conans.__version__ because the library version may be different than the version on the path.
-    spew = base.evaluate("conan --version")
-    idx = spew.rfind(" ")+1
-    output = spew[idx:]
-    return output
-
-def conanStorageFolder() -> str:
-    return base.evaluate("conan config get storage.path")
-
 def copyFiles(pattern:str, srcFolder:str, destFolder:str, keepPath:bool=True) -> list:
     '''
     Copies files having a specified pattern within the source folder.  This function exists because I had problems using

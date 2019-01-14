@@ -1,12 +1,11 @@
 FROM ubuntu:18.04
 
-ENV DEBIAN_FRONTEND noninteractive
-
 # install python3
 RUN apt-get update \
     && apt-get install --yes apt-utils python3 python3-pip sudo
 
 # install all debian packages up front (saves time for the development cycle of gst-conan codebase)
+ENV DEBIAN_FRONTEND noninteractive
 COPY dockers/ubuntu-18.04/debians.txt /tmp/debians.txt
 RUN apt-get install --yes $(cat /tmp/debians.txt | tr '\r\n' ' ' | tr '\n' ' ')
 RUN sudo apt-get clean
@@ -23,23 +22,13 @@ USER default_user
 # install stuff with pip (saves time for the development cycle of gst-conan codebase)
 RUN pip3 install setuptools wheel
 RUN pip3 install --user meson
+RUN pip3 install conan
 
-# The following 'conan' args must match the user's system.  We need to install the same version of conan as the user.
-# We must use the same storage folder as the user so that conan packages can be debugged by the consumer (debug symbols
-# will point to absolute paths on the system where compilation occurred).
-ARG CONAN_STORAGE_PATH
-ARG CONAN_VERSION
-
-ENV CONAN_STORAGE_PATH "$CONAN_STORAGE_PATH"
-
-RUN pip3 install conan==$CONAN_VERSION
+# make this folder owned by default_user
+#     otherwise, when it gets mounted during `docker run` the folder will be owned by root.
+RUN mkdir -p ~/.conan/data
 
 USER root
-
-# make this folder exists and is owned by default_user
-#     otherwise it would be owned by root when mounted from a `docker run` command.
-RUN mkdir -p "$CONAN_STORAGE_PATH"
-RUN chown -R default_user "$CONAN_STORAGE_PATH"
 
 # deploy gst-conan
 COPY config/ /opt/gst-conan/config
@@ -54,8 +43,5 @@ USER default_user
 RUN echo "\n\nPATH=\${HOME}/.local/bin:\${PATH}\n" >> ~/.bashrc
 ENV PATH=${PATH}:/opt/gst-conan
 
-# setup conan storage path
-RUN bash --login -c "conan config set storage.path=\"$CONAN_STORAGE_PATH\""
-
 ENTRYPOINT ["bash", "--login", "-c"]
-CMD ["echo", "hello world"]
+CMD ["bash"]

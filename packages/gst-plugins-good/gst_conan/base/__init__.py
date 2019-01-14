@@ -24,6 +24,9 @@ def basenames(filenames:list) -> list:
 
     return output
 
+def conanDataFolderWithinDockerContainers() -> str:
+    return "/home/default_user/.conan/data"
+
 def currentUserIsPrivileged() -> bool:
     '''
     Determines whether the user has root (on linux) or administrative (on windows) privileges.

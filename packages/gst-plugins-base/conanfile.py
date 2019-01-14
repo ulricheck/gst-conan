@@ -48,14 +48,10 @@ class GstPluginsBaseConan(ConanFile):
         pc = gst_conan.build.PkgConfigFile()
         pc.load(pkgConfigFile)
 
-        pc.ensureRequires(["gstreamer-audio-1.0", "gstreamer-base-1.0", "gstreamer-video-1.0", "gstreamer-tag-1.0"])
-
-        #requirements = ["gstreamer-tag-1.0"]
-        #for requirement in requirements:
-        #    if pc.requiresPrivate == None or len(pc.requiresPrivate) == 0:
-        #        pc.requiresPrivate = requirement
-        #    elif requirement not in pc.requiresPrivate:
-        #        pc.requiresPrivate += (" " + requirement)
+        requirements = ["  gstreamer-audio-1.0", " gstreamer-tag-1.0"]
+        for requirement in requirements:
+            if requirement not in pc.requires:
+                pc.requires += requirement
 
         pc.save(pkgConfigFile)
 
