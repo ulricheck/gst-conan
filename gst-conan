@@ -57,6 +57,15 @@ if '__main__' == __name__:
         "developer who is modifying the code within the repo.  Normal users should ignore this command.")
 
     # ----------------------
+    # verb = setup
+    # ----------------------
+    setupParser = verbParsers.add_parser("setup", description= \
+        "Sets up a machine with packages required to run gstreamer.  Must be run with root privileges.")
+    setupParser.add_argument("--distro", dest="distro", type=str, required=True,
+                              choices=gst_conan.build.dockerfileChoices(),
+                              help="(optional) Provide this argument to specify the name of a runtime distro.")
+
+    # ----------------------
     # Wire up implementation
     # ----------------------
     thisFolder = os.path.dirname(os.path.realpath(__file__))
@@ -80,6 +89,8 @@ if '__main__' == __name__:
 
             # Make the call
             gst_conan.commands.createWithDocker(args.docker, subprocess.list2cmdline(createArgs))
+    elif args.verb == "setup":
+        gst_conan.commands.setup(args.distro)
     elif args.verb != None:
         raise Exception("Unrecognized verb (" + args.verb + ").  Command line was:  " + subprocess.list2cmdline(sys.argv))
     else:

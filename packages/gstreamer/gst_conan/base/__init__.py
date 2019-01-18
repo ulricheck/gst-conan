@@ -187,12 +187,12 @@ def gstConanConfigFolder() -> str:
     output = os.path.join(gstConanFolder(), "config")
     return output
 
-def gstConanDockersFolder() -> str:
+def gstConanDistrosFolder() -> str:
     '''
-    Gets the folder inside which the `gst-conan/dockers` Dockerfiles are stored.
+    Gets the folder inside which the `gst-conan/distros` Dockerfiles are stored.
     :return: The absolute folder path.
     '''
-    output = os.path.join(gstConanFolder(), "dockers")
+    output = os.path.join(gstConanFolder(), "distros")
     return output
 
 def gstConanFolder() -> str:

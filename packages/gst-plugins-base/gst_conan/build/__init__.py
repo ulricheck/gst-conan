@@ -193,12 +193,12 @@ def copytree(srcFolder:str, destFolder:str, includeSubfolders:bool=True, onlyNew
 def dockerfileChoices() -> list:
     '''
     The list of choices for docker containers which can be used to build the conan packages.  This is basically
-    the list of folders under `gst-conan/dockers` (where each folder contains a dockerfile).
+    the list of folders under `gst-conan/distros` (where each folder contains a dockerfile).
     :return:
     '''
-    dockersFolder = base.gstConanDockersFolder()
+    distrosFolder = base.gstConanDistrosFolder()
 
-    output = list(set(glob.glob(dockersFolder + "/*/Dockerfile")))
+    output = list(set(glob.glob(distrosFolder + "/*/Dockerfile")))
     for i, dockerfile in enumerate(output):
         output[i] = os.path.basename(os.path.dirname(dockerfile))
 

@@ -7,10 +7,10 @@ RUN apt-get update \
     && apt-get install --yes apt-utils python3 python3-pip sudo
 
 # install all debian packages up front (saves time for the development cycle of gst-conan codebase)
-COPY dockers/ubuntu-18.04/debians.txt /tmp/debians.txt
-RUN apt-get install --yes $(cat /tmp/debians.txt | tr '\r\n' ' ' | tr '\n' ' ')
+COPY distros/ubuntu-18.04/debians-build.txt /tmp/debians-build.txt
+RUN apt-get install --yes $(cat /tmp/debians-build.txt | tr '\r\n' ' ' | tr '\n' ' ')
 RUN sudo apt-get clean
-RUN rm /tmp/debians.txt
+RUN rm /tmp/debians-build.txt
 
 # meson will not run as the 'root' user so we need to create another user
 RUN addgroup sudoers

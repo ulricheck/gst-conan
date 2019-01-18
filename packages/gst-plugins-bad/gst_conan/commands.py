@@ -33,7 +33,7 @@ def createWithDocker(dockerRecipeId:str, createArgs:str) -> None:
     '''
     Implements `conan create` when the "--docker" flag is specified.
     :param dockerRecipeId: Identifies the docker image (and container) to be used.  Specifically this is the name of a
-    folder under `gst-conan/dockers` to be used for building.
+    folder under `gst-conan/distros` to be used for building.
     :param createArgs: The command-line arguments that are to be forwarded to the docker container.  This includes
     the 'create' verb and everything that comes after it, but it does not include the "--docker xxx" part.
     :return: Nothing.
@@ -53,7 +53,7 @@ def createWithDocker(dockerRecipeId:str, createArgs:str) -> None:
     print("[BEGIN] Docker build (setting up docker container)")
 
     base.execute("docker build . "
-                     f"--file {base.gstConanDockersFolder()}/{dockerRecipeId}/Dockerfile "
+                     f"--file {base.gstConanDistrosFolder()}/{dockerRecipeId}/Dockerfile "
                      f"--tag {dockerImageTag} "
                      f"--build-arg CONAN_STORAGE_PATH={conanStorageFolder} "
                      f"--build-arg CONAN_VERSION={build.conanVersion()} ",
@@ -104,3 +104,27 @@ def createWithoutDocker(packagesFolder:str, revision:str, version:str,
         packageFolder = os.path.join(packagesFolder, packageName)
         cmd = f"conan create {packageFolder} {packageName}/{version}@{user}/{channel} -s build_type={build_type} {xargs}"
         base.execute(cmd, env=env)
+
+def setup(distro:str) -> None:
+    '''
+    Installs runtime dependendencies on the target machine.
+    :param distro:  The distro on which dependencies are to be installed.
+    :return: Returns nothing, but throws an exception if problems occur.
+    '''
+
+    if not base.currentUserIsPrivileged():
+        base.raiseError("Root privileges are required.")
+
+    distroFolder = os.path.join(base.gstConanDistrosFolder(), distro)
+
+    if not os.path.isdir(distroFolder):
+        base.raiseError(f"A folder does not exist for distro {distro}:  " + distroFolder)
+
+    debiansFile = os.path.join(distroFolder, "debians-run.txt")
+    if os.path.isfile(debiansFile):
+        base.execute("apt-get update")
+        debiansList = base.readNonEmptyLines(debiansFile)
+        debiansStr = ' '.join(debiansList)
+        env = os.environ.copy()
+        env["DEBIAN_FRONTEND"] = "noninteractive"
+        base.execute("apt-get install --yes " + debiansStr, env=env)
