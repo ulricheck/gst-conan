@@ -8,7 +8,7 @@ RUN apt-get update \
 
 # install all debian packages up front (saves time for the development cycle of gst-conan codebase)
 COPY distros/ubuntu-18.04/debians-build.txt /tmp/debians-build.txt
-RUN apt-get install --yes $(cat /tmp/debians-build.txt | tr '\r\n' ' ' | tr '\n' ' ')
+RUN apt-get update && apt-get install --yes $(cat /tmp/debians-build.txt | tr '\r\n' ' ' | tr '\n' ' ')
 RUN sudo apt-get clean
 RUN rm /tmp/debians-build.txt
 

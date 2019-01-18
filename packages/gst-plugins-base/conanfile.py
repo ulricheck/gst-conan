@@ -40,23 +40,27 @@ class GstPluginsBaseConan(ConanFile):
     exports = "gst_conan/*", "config/*"
 
     @staticmethod
-    def applyWorkaround537(pkgConfigFile):
+    def applyWorkaround537(pkgConfigFolder):
         '''
         # workaround for https://gitlab.freedesktop.org/gstreamer/gst-plugins-base/issues/537
         # There is a problem with the `gstreamer-pbutils-1.0.pc` file
         :param pkgConfigFile: The path to the file to be repaired.
         '''
         pc = gst_conan.build.PkgConfigFile()
+        pkgConfigFile = os.path.join(pkgConfigFolder, "gstreamer-pbutils-1.0.pc")
         pc.load(pkgConfigFile)
 
-        pc.ensureRequires(["gstreamer-audio-1.0", "gstreamer-base-1.0", "gstreamer-video-1.0", "gstreamer-tag-1.0"])
+        pc.ensureRequires(["gstreamer-audio-1.0", "gstreamer-base-1.0", "gstreamer-video-1.0"])
+        #pc.ensureRequiresPrivate(["gstreamer-tag-1.0"])
 
-        #requirements = ["gstreamer-tag-1.0"]
-        #for requirement in requirements:
-        #    if pc.requiresPrivate == None or len(pc.requiresPrivate) == 0:
-        #        pc.requiresPrivate = requirement
-        #    elif requirement not in pc.requiresPrivate:
-        #        pc.requiresPrivate += (" " + requirement)
+        pc.save(pkgConfigFile)
+
+        # --------------------------
+        pc = gst_conan.build.PkgConfigFile()
+        pkgConfigFile = os.path.join(pkgConfigFolder, "gstreamer-audio-1.0.pc")
+        pc.load(pkgConfigFile)
+
+        pc.ensureRequires(["gstreamer-tag-1.0"])
 
         pc.save(pkgConfigFile)
 
@@ -92,8 +96,8 @@ class GstPluginsBaseConan(ConanFile):
         # workaround for https://gitlab.freedesktop.org/gstreamer/gst-plugins-base/issues/537
         # There is a problem with the `gstreamer-pbutils-1.0.pc` file
 
-        self.__class__.applyWorkaround537(os.path.join(self.package_folder, "gstreamer-pbutils-1.0.pc"))
-        self.__class__.applyWorkaround537(os.path.join(self.package_folder, "pc-installed", "gstreamer-pbutils-1.0.pc"))
+        self.__class__.applyWorkaround537(os.path.join(self.package_folder))
+        self.__class__.applyWorkaround537(os.path.join(self.package_folder, "pc-installed"))
 
     def package_info(self):
         gst_conan.build.doConanPackageInfo(self, self.packageInfo)

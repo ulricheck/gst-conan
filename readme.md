@@ -61,7 +61,7 @@ local Conan repo.
 
 #### Need to debug the docker container?
 You can poke around inside the docker container as follows where the conan storage folder on your host machine
-(`~/.conan/data` by default) is denoted as `$CONAN_STORAGE_FOLDER`. 
+(typically `~/.conan/data`) is denoted as `$CONAN_STORAGE_FOLDER`. 
 
 ```bash
 docker run -it --mount type=bind,src=$CONAN_STORAGE_FOLDER,dst=$CONAN_STORAGE_FOLDER gst-conan_ubuntu-18.04:latest 'bash'
