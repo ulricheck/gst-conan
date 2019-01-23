@@ -30,6 +30,9 @@ def conanVersion() -> str:
 def conanStorageFolder() -> str:
     return base.evaluate("conan config get storage.path")
 
+def conanUserHomeFolder() -> str:
+    return os.path.expanduser(os.getenv("CONAN_USER_HOME", "~"))
+
 def copyFiles(pattern:str, srcFolder:str, destFolder:str, keepPath:bool=True) -> list:
     '''
     Copies files having a specified pattern within the source folder.  This function exists because I had problems using

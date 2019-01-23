@@ -3,8 +3,6 @@
 This is a tool for building [Gstreamer](https://gstreamer.freedesktop.org/) components as [Conan](https://conan.io/) packages
 using the [Meson](https://mesonbuild.com/) build scripts which are included in the Gstreamer repositories.
 
-This is the tool used to the conan packages listed in [our repo on bintray](https://bintray.com/panopto-oss/gst-conan).
-
 ## Machine setup instructions
 
 First time users should look at the [machine setup instructions](doc/machine-setup.md).
@@ -61,10 +59,10 @@ local Conan repo.
 
 #### Need to debug the docker container?
 You can poke around inside the docker container as follows where the conan storage folder on your host machine
-(typically `~/.conan/data`) is denoted as `$CONAN_STORAGE_FOLDER`. 
+(typically `~/.conan`) is denoted as `$CONAN_USER_HOME`.  Be careful:  The `~` must be expanded.
 
 ```bash
-docker run -it --mount type=bind,src=$CONAN_STORAGE_FOLDER,dst=$CONAN_STORAGE_FOLDER gst-conan_ubuntu-18.04:latest 'bash'
+docker run -it --mount type=bind,src=$CONAN_USER_HOME,dst=$CONAN_USER_HOME gst-conan_ubuntu-18.04:latest 'bash'
 ```
 
 The expression above reveals how the `CONAN_STORAGE_FOLDER` is the same on the host machine and inside the docker container.

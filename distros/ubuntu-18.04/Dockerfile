@@ -2,6 +2,11 @@ FROM ubuntu:18.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
+# The following parameters must match the user's system.
+ARG CONAN_USER_HOME
+ARG CONAN_VERSION
+ARG USER_UID=1000
+
 # install python3
 RUN apt-get update \
     && apt-get install --yes apt-utils python3 python3-pip sudo
@@ -14,7 +19,7 @@ RUN rm /tmp/debians-build.txt
 
 # meson will not run as the 'root' user so we need to create another user
 RUN addgroup sudoers
-RUN adduser --disabled-password --shell /bin/bash --gecos "User" default_user
+RUN adduser --disabled-password --shell /bin/bash --gecos "User" default_user --uid $USER_UID --gid $USER_UID
 RUN usermod --append --groups sudoers default_user
 RUN echo "\ndefault_user ALL=(ALL) NOPASSWD: ALL\n" >> /etc/sudoers
 
@@ -24,13 +29,7 @@ USER default_user
 RUN pip3 install setuptools wheel
 RUN pip3 install --user meson
 
-# The following 'conan' args must match the user's system.  We need to install the same version of conan as the user.
-# We must use the same storage folder as the user so that conan packages can be debugged by the consumer (debug symbols
-# will point to absolute paths on the system where compilation occurred).
-ARG CONAN_STORAGE_PATH
-ARG CONAN_VERSION
-
-ENV CONAN_STORAGE_PATH "$CONAN_STORAGE_PATH"
+ENV CONAN_USER_HOME "$CONAN_USER_HOME"
 
 RUN pip3 install conan==$CONAN_VERSION
 
@@ -38,8 +37,8 @@ USER root
 
 # make this folder exists and is owned by default_user
 #     otherwise it would be owned by root when mounted from a `docker run` command.
-RUN mkdir -p "$CONAN_STORAGE_PATH"
-RUN chown -R default_user "$CONAN_STORAGE_PATH"
+RUN mkdir -p "$CONAN_USER_HOME"
+RUN chown -R default_user "$CONAN_USER_HOME"
 
 # deploy gst-conan
 COPY config/ /opt/gst-conan/config
@@ -53,9 +52,6 @@ USER default_user
 # setup path
 RUN echo "\n\nPATH=\${HOME}/.local/bin:\${PATH}\n" >> ~/.bashrc
 ENV PATH=${PATH}:/opt/gst-conan
-
-# setup conan storage path
-RUN bash --login -c "conan config set storage.path=\"$CONAN_STORAGE_PATH\""
 
 ENTRYPOINT ["bash", "--login", "-c"]
 CMD ["echo", "hello world"]

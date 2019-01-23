@@ -43,7 +43,6 @@ class GstPluginsBaseConan(ConanFile):
     def applyWorkaround537(pkgConfigFolder):
         '''
         # workaround for https://gitlab.freedesktop.org/gstreamer/gst-plugins-base/issues/537
-        # There is a problem with the `gstreamer-pbutils-1.0.pc` file
         :param pkgConfigFile: The path to the file to be repaired.
         '''
         pc = gst_conan.build.PkgConfigFile()
