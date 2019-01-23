@@ -18,8 +18,8 @@ RUN sudo apt-get clean
 RUN rm /tmp/debians-build.txt
 
 # meson will not run as the 'root' user so we need to create another user
+RUN adduser --disabled-password --shell /bin/bash --gecos "User" default_user --uid $USER_UID --home $CONAN_USER_HOME
 RUN addgroup sudoers
-RUN adduser --disabled-password --shell /bin/bash --gecos "User" default_user --uid $USER_UID --gid $USER_UID
 RUN usermod --append --groups sudoers default_user
 RUN echo "\ndefault_user ALL=(ALL) NOPASSWD: ALL\n" >> /etc/sudoers
 
@@ -29,16 +29,13 @@ USER default_user
 RUN pip3 install setuptools wheel
 RUN pip3 install --user meson
 
-ENV CONAN_USER_HOME "$CONAN_USER_HOME"
-
 RUN pip3 install conan==$CONAN_VERSION
 
 USER root
 
-# make this folder exists and is owned by default_user
-#     otherwise it would be owned by root when mounted from a `docker run` command.
-RUN mkdir -p "$CONAN_USER_HOME"
-RUN chown -R default_user "$CONAN_USER_HOME"
+# Make the relevant folder.
+RUN mkdir -p "$CONAN_USER_HOME/.conan/data"
+RUN chown -R default_user:default_user "$CONAN_USER_HOME/.conan"
 
 # deploy gst-conan
 COPY config/ /opt/gst-conan/config

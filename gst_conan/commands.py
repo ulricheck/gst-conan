@@ -51,10 +51,12 @@ def createWithDocker(dockerRecipeId:str, createArgs:str) -> None:
 
     conanUserHomeFolder = os.path.expanduser(build.conanUserHomeFolder())
 
-    if os.path.relpath(conanStorageFolder, conanUserHomeFolder).startswith(".."):
+    conanHomeFolder = os.path.expanduser(build.conanHomeFolder())
+
+    if os.path.relpath(conanStorageFolder, conanHomeFolder).startswith(".."):
         logging.error("conan storage folder = " + conanStorageFolder)
         logging.error("conan user home folder = " + conanUserHomeFolder)
-        base.raiseError("The conan storage folder must be within the conan user home folder.")
+        base.raiseError("The conan storage folder must be within the conan home folder.")
 
     userUid = base.userId(None)
 
@@ -62,7 +64,7 @@ def createWithDocker(dockerRecipeId:str, createArgs:str) -> None:
 
     print("[BEGIN] Docker build (setting up docker container)")
 
-    print("conan user home folder = " + conanUserHomeFolder)
+    print("conan home folder = " + conanHomeFolder)
     print("docker image tag = " + dockerImageTag)
     print(f"user uid = {userUid}")
 
