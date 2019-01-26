@@ -258,3 +258,16 @@ def readNonEmptyLines(filename:str) -> list:
                 output.append(txt)
 
     return output
+
+def userId(username:str) -> int:
+    if isLinux():
+        idstr = None
+
+        if username:
+            idstr = evaluate(f"id -u {username}", verbose=False)
+        else:
+            idstr = evaluate("id -u", verbose=False)
+
+        return int(idstr)
+    else:
+        raiseError("Not implemented for current platform")

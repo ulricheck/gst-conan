@@ -20,15 +20,21 @@ def conanBuildTypes() -> list:
     '''
     return ["Debug", "Release"]
 
+def conanHomeFolder() -> str:
+    return os.path.join(conanUserHomeFolder(), ".conan")
+
+def conanStorageFolder() -> str:
+    return base.evaluate("conan config get storage.path")
+
+def conanUserHomeFolder() -> str:
+    return os.path.expanduser(os.getenv("CONAN_USER_HOME", "~"))
+
 def conanVersion() -> str:
     # Here we don't use conans.__version__ because the library version may be different than the version on the path.
     spew = base.evaluate("conan --version")
     idx = spew.rfind(" ")+1
     output = spew[idx:]
     return output
-
-def conanStorageFolder() -> str:
-    return base.evaluate("conan config get storage.path")
 
 def copyFiles(pattern:str, srcFolder:str, destFolder:str, keepPath:bool=True) -> list:
     '''

@@ -2,6 +2,7 @@ from . import base
 from . import build
 from . import configuration
 
+import logging
 import os
 import shlex
 import shutil
@@ -48,15 +49,31 @@ def createWithDocker(dockerRecipeId:str, createArgs:str) -> None:
 
     conanStorageFolder = os.path.expanduser(build.conanStorageFolder())
 
+    conanUserHomeFolder = os.path.expanduser(build.conanUserHomeFolder())
+
+    conanHomeFolder = os.path.expanduser(build.conanHomeFolder())
+
+    if os.path.relpath(conanStorageFolder, conanHomeFolder).startswith(".."):
+        logging.error("conan storage folder = " + conanStorageFolder)
+        logging.error("conan user home folder = " + conanUserHomeFolder)
+        base.raiseError("The conan storage folder must be within the conan home folder.")
+
+    userUid = base.userId(None)
+
     # ---------------------------------
 
     print("[BEGIN] Docker build (setting up docker container)")
 
+    print("conan home folder = " + conanHomeFolder)
+    print("docker image tag = " + dockerImageTag)
+    print(f"user uid = {userUid}")
+
     base.execute("docker build . "
                      f"--file {base.gstConanDistrosFolder()}/{dockerRecipeId}/Dockerfile "
                      f"--tag {dockerImageTag} "
-                     f"--build-arg CONAN_STORAGE_PATH={conanStorageFolder} "
-                     f"--build-arg CONAN_VERSION={build.conanVersion()} ",
+                     f"--build-arg CONAN_USER_HOME={conanUserHomeFolder} "
+                     f"--build-arg CONAN_VERSION={build.conanVersion()} "
+                     f"--build-arg USER_UID={userUid} ",
                  workingFolder=base.gstConanFolder())
 
     print("[END] Docker build (setting up docker container)")
@@ -70,7 +87,7 @@ def createWithDocker(dockerRecipeId:str, createArgs:str) -> None:
     os.makedirs(conanStorageFolder, exist_ok=True)
 
     base.execute(
-        f"docker run --mount type=bind,src={conanStorageFolder},dst={conanStorageFolder} {dockerImageTag} " \
+        f"docker run --mount type=bind,src={conanUserHomeFolder},dst={conanUserHomeFolder} {dockerImageTag} " \
             + shlex.quote(gstConanCmd) )
 
     print("[END] Docker run (building conan packages)")
@@ -99,6 +116,12 @@ def createWithoutDocker(packagesFolder:str, revision:str, version:str,
 
     env = os.environ.copy()
     env['GST_CONAN_REVISION'] = revision
+
+    conanUserHomeFolder = os.path.expanduser(build.conanUserHomeFolder())
+
+    print("conan user home folder = " + conanUserHomeFolder)
+
+    print(f"user uid = {base.userId(None)}")
 
     for packageName, packageInfo in config.packages.items():
         packageFolder = os.path.join(packagesFolder, packageName)
