@@ -265,8 +265,7 @@
             "vmnc": {},
             "voaacenc": {},
             "webrtc": {},
-            "y4mdec": {},
-            "yadif": {}
+            "y4mdec": {}
         },
         "sharedlibs" : [
             "libgstadaptivedemux-1.0",

@@ -2,8 +2,11 @@ from . import base
 from . import build
 from . import configuration
 
+from   collections import OrderedDict as odict
+
 import logging
 import os
+import re
 import shlex
 import shutil
 import subprocess
@@ -127,6 +130,24 @@ def createWithoutDocker(packagesFolder:str, revision:str, version:str,
         packageFolder = os.path.join(packagesFolder, packageName)
         cmd = f"conan create {packageFolder} {packageName}/{version}@{user}/{channel} -s build_type={build_type} {xargs}"
         base.execute(cmd, env=env)
+
+    packageFolderMatcher = re.compile('\s+package_folder:\s+(.*)\s*\n')
+    print("--------------------------------")
+    print("Conan packages were installed:")
+    for packageName, packageInfo in config.packages.items():
+        conanPackageInfo = base.evaluate(f"conan info --paths {packageName}/{version}@{user}/{channel}", verbose=False)
+        conanPackagePath = packageFolderMatcher.search(conanPackageInfo).group(1)
+        print(f"  {packageName}:")
+        print(f"    path:  {conanPackagePath}")
+        print(f"    plugins:")
+
+        pluginFiles = base.evaluate("ls -1a", verbose=False,
+                                    workingFolder=os.path.join(conanPackagePath, "plugins"))
+        pluginFileNames = pluginFiles.split("\n")
+        for pluginFileName in pluginFileNames:
+            if not pluginFileName.startswith("."):
+                print(f"      - {pluginFileName}")
+    print("--------------------------------")
 
 def setup(distro:str) -> None:
     '''
