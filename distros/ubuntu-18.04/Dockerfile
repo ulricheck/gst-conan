@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM nvidia/cudagl:10.0-devel-ubuntu18.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -56,6 +56,13 @@ ENV PATH=${PATH}:/opt/gst-conan
 
 # setup conan storage path
 RUN bash --login -c "conan config set storage.path=\"$CONAN_STORAGE_PATH\""
+RUN bash --login -c "conan user"
+RUN bash --login -c "conan remote add bincrafters \"https://api.bintray.com/conan/bincrafters/public-conan\""
+RUN bash --login -c "conan remote add camposs \"https://conan.campar.in.tum.de/api/conan/conan-camposs\""
+RUN bash --login -c "conan remote add ubitrack \"https://conan.campar.in.tum.de/api/conan/conan-ubitrack\""
+RUN bash --login -c "conan remote add vendor \"https://conan.campar.in.tum.de/api/conan/conan-vendor\""
+RUN bash --login -c "conan profile new default --detect"
+RUN bash --login -c "conan profile update settings.compiler.libcxx=libstdc++11 default"
 
 ENTRYPOINT ["bash", "--login", "-c"]
 CMD ["echo", "hello world"]

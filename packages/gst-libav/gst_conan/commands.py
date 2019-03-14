@@ -70,7 +70,7 @@ def createWithDocker(dockerRecipeId:str, createArgs:str) -> None:
     os.makedirs(conanStorageFolder, exist_ok=True)
 
     base.execute(
-        f"docker run --mount type=bind,src={conanStorageFolder},dst={conanStorageFolder} {dockerImageTag} " \
+        f"docker run --runtime=nvidia --mount type=bind,src={conanStorageFolder},dst={conanStorageFolder} {dockerImageTag} " \
             + shlex.quote(gstConanCmd) )
 
     print("[END] Docker run (building conan packages)")

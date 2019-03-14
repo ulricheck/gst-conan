@@ -226,6 +226,8 @@
             "mpegtsdemux": {},
             "mpegtsmux": {},
             "mxf": {},
+            "nvdec": {},
+            "nvenc": {},
             "netsim": {},
             "openglmixers": {},
             "pcapparse": {},

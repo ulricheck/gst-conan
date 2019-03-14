@@ -56,7 +56,7 @@ Use `gst-conan` to create several conan packages for Gstreamer `1.14.4` as follo
 local Conan repo.
 
 ```bash
-./gst-conan create --docker ubuntu-18.04 --rev 1.14.4 --version 1.14.4 --build_type Debug --user my_conan_user --channel my_conan_channel --keep-source
+./gst-conan create --docker ubuntu-18.04 --rev 1.14.4 --version 1.14.4 --build_type Release --user camposs --channel stable --keep-source
 ```
 
 #### Need to debug the docker container?

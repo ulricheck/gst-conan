@@ -150,10 +150,14 @@ libnetcdf-c++4
 libnetcdf13
 libnice-dev
 libnl-route-3-200
+libnvidia-compute-410
+libnvidia-decode-410
+libnvidia-encode-410
 libodbc1
 libofa0-dev
 libogdi3.2
 libogg-dev
+libomp-dev
 libonig4
 libopenal-dev
 libopencore-amrnb-dev
@@ -291,10 +295,13 @@ libzbar-dev
 libzvbi-dev
 lv2-dev
 mysql-common
+nasm
 nettle-dev
 ninja-build
 odbcinst
 odbcinst1debian2
+ocl-icd-opencl-dev
+opencl-headers
 perl-doc
 pkg-config
 proj-data
@@ -308,3 +315,4 @@ qtdeclarative5-dev
 scour
 wayland-protocols
 x11proto-xinerama-dev
+yasm
