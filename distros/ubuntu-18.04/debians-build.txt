@@ -24,7 +24,6 @@ libarmadillo8
 libarpack2
 libasound2-dev
 libass-dev
-libavfilter-dev
 libatk-bridge2.0-dev
 libatk1.0-dev
 libatspi2.0-dev
@@ -150,9 +149,6 @@ libnetcdf-c++4
 libnetcdf13
 libnice-dev
 libnl-route-3-200
-libnvidia-compute-410
-libnvidia-decode-410
-libnvidia-encode-410
 libodbc1
 libofa0-dev
 libogdi3.2

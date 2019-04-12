@@ -40,6 +40,7 @@ class GstLibav(ConanFile):
 
     def build(self):
         pcPaths = [
+            self.deps_cpp_info["ffmpeg"].rootpath,
             self.deps_cpp_info["gstreamer"].rootpath,
             self.deps_cpp_info["gst-plugins-base"].rootpath
         ]
@@ -68,6 +69,7 @@ class GstLibav(ConanFile):
         gst_conan.build.doConanPackageInfo(self, self.packageInfo)
 
     def requirements(self):
+        self.requires(f"ffmpeg/[>=4.1]@{self.user}/{self.channel}")
         self.requires(f"gstreamer/{self.version}@{self.user}/{self.channel}")
         self.requires(f"gst-plugins-base/{self.version}@{self.user}/{self.channel}")
 

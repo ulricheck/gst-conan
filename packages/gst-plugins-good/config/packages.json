@@ -131,6 +131,12 @@
         ]
     },
     "gst-libav": {
+        "pkgconfigs" : {
+            "libavfilter" : {
+                "lib" : "libavfilter",
+                "gir" : null
+            }
+        },
         "plugins" : {
             "libav": {}
         }
