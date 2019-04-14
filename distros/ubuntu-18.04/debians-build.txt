@@ -262,6 +262,8 @@ libtwolame-dev
 libunbound2
 liburiparser1
 libusb-1.0-0-dev
+libva-dev
+libvdpau-dev
 libv4l-dev
 libv4l2rds0
 libvisual-0.4-dev

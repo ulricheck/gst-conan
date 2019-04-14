@@ -102,7 +102,7 @@ def createWithoutDocker(packagesFolder:str, revision:str, version:str,
 
     for packageName, packageInfo in config.packages.items():
         packageFolder = os.path.join(packagesFolder, packageName)
-        cmd = f"conan create {packageFolder} {packageName}/{version}@{user}/{channel} -s build_type={build_type} {xargs}"
+        cmd = f"conan create {packageFolder} {packageName}/{version}@{user}/{channel} --build missing -s build_type={build_type} {xargs}"
         base.execute(cmd, env=env)
 
 def setup(distro:str) -> None:

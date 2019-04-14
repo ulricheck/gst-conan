@@ -1,4 +1,4 @@
-from conans import ConanFile, Meson
+from conans import ConanFile, Meson, tools
 
 import os
 import sys
@@ -10,6 +10,36 @@ if sys.version_info[0] < 3:
 # ----------------
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 import gst_conan
+
+
+ffmpeg_wrap_src = """project('FFmpeg', 'c', 'cpp')
+
+cc = meson.get_compiler('c')
+
+ffmpeg = dependency('ffmpeg')
+
+
+libavfilter_dep = declare_dependency(
+  version : '7.16.100',
+  dependencies : [cc.find_library('avfilter', dirs : '{libdir}'), ffmpeg],
+  include_directories : include_directories('{incdir}'))
+
+libavformat_dep = declare_dependency(
+  version: '58.12.100',
+  dependencies : [cc.find_library('avformat', dirs : '{libdir}'), ffmpeg],
+  include_directories : include_directories('{incdir}'))
+
+libavutil_dep = declare_dependency(
+  version: '56.14.100',
+  dependencies : [cc.find_library('avutil', dirs : '{libdir}'), ffmpeg],
+  include_directories : include_directories('{incdir}'))
+
+libavcodec_dep = declare_dependency(
+  version: '58.18.100',
+  dependencies : [cc.find_library('avcodec', dirs : '{libdir}'), ffmpeg],
+  include_directories : include_directories('{incdir}'))
+"""
+
 
 # ----------------
 # Implement the ConanFile
@@ -25,9 +55,10 @@ class GstLibav(ConanFile):
         "build_type": None,
         "arch": None
     }
-    options = {}
-    default_options = None
+    options = {"nvenc": [False, True],}
+    default_options = ("nvenc=True",)
     build_policy = "outdated"
+    generators = "pkg_config"
 
     # It would be nice to export like this ...
 
@@ -40,7 +71,7 @@ class GstLibav(ConanFile):
 
     def build(self):
         pcPaths = [
-            self.deps_cpp_info["ffmpeg"].rootpath,
+            self.build_folder,
             self.deps_cpp_info["gstreamer"].rootpath,
             self.deps_cpp_info["gst-plugins-base"].rootpath
         ]
@@ -77,3 +108,10 @@ class GstLibav(ConanFile):
         # This is what actually belongs here.
         self.run(f"git clone --recurse-submodules https://github.com/gstreamer/{self.name}.git -b {self.gstRevision}")
         self.run(f"cd {self.name}")
+        # workaround to accept generated pkgconfig files
+        tools.mkdir(f"{self.name}/subprojects/FFmpeg")
+        tools.save(f"{self.name}/subprojects/FFmpeg/meson.build", ffmpeg_wrap_src.format(
+            libdir=os.path.join(self.deps_cpp_info["ffmpeg"].rootpath, 'lib'),
+            incdir=os.path.join(self.deps_cpp_info["ffmpeg"].rootpath, 'include'),
+            ))
+
